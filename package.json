@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build-css": "tailwindcss build src/styles.css -o public/styles.css"
+  },
+  "devDependencies": {
+    "daisyui": "^4.12.13",
+    "tailwindcss": "^3.4.14"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "flowbite": "^2.5.2"
+  }
+}
