@@ -8,16 +8,21 @@
     <title>Tambah Event</title>
   </head>
   <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <form id="eventForm" action="add_process.php" method="post" enctype="multipart/form-data">
+    <form id="eventForm" action="create_process.php" method="post" enctype="multipart/form-data">
       <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">
           <h2 class="text-base font-semibold leading-7 text-gray-900">Tambah Event</h2>
-          <p class="mt-1 text-sm leading-6 text-gray-600">Silahkan isi detail event di bawah ini.</p>
+          <div class="flex mt-1">
+            <div class="flex-1">
+              <p class="text-sm text-gray-600">Silahkan isi detail event di bawah ini.</p>
+            </div>
+            <div class="text-sm font-semibold text-gray-900"><a href="event_management.php">Back</a></div>
+          </div>
           <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 grid-cols-6">
             <div class="col-span-6">
               <label for="event_name" class="block text-sm font-medium leading-6 text-gray-900">Nama Event</label>
               <div class="mt-2">
-                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 sm:max-w-md">
+                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
                   <input type="text" required name="event_name" id="event_name" autocomplete="event_name" class="block flex-1 border-0 bg-white py-1.5 pl-1 rounded-md text-gray-900 placeholder:text-white-400 focus:ring-blue-500 sm:text-sm sm:leading-6">
                 </div>
               </div>
@@ -25,7 +30,7 @@
             <div class="col-span-6">
               <label for="cap" class="block text-sm font-medium leading-6 text-gray-900">Kapasitas</label>
               <div class="mt-2">
-                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 sm:max-w-md">
+                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
                   <input type="text" required name="cap" id="cap" autocomplete="cap" class="block flex-1 border-0 bg-white py-1.5 pl-1 rounded-md text-gray-900 placeholder:text-white-400 focus:ring-blue-500 sm:text-sm sm:leading-6" placeholder="ex : 100">
                 </div>
               </div>
@@ -33,7 +38,7 @@
             <div class="col-span-6">
               <label for="loc" class="block text-sm font-medium leading-6 text-gray-900">Lokasi</label>
               <div class="mt-2">
-                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500 sm:max-w-md">
+                <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
                   <input type="text" required name="loc" id="loc" autocomplete="loc" class="block flex-1 border-0 bg-white py-1.5 pl-1 rounded-md text-gray-900 placeholder:text-white-400 focus:ring-blue-500 sm:text-sm sm:leading-6" placeholder="ex : jl. menuju roma">
                 </div>
               </div>
@@ -117,7 +122,7 @@
           </div>
         </div>
         <div class="mt-6 flex items-center justify-end gap-x-6">
-          <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+          <div class="text-sm font-semibold leading-6 text-gray-900"><a href="event_management.php">Back</a></div>
           <button type="button" onclick="openConfirmModal()" class="rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500">Add event</button>
         </div>
     </form>
