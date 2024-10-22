@@ -1,6 +1,4 @@
 <?php 
-// $dsn = "mysql:host=localhost;dbname=uts";
-// $kunci = new PDO($dsn,"root","");
 
 require_once('../DB.php');
 
@@ -78,14 +76,14 @@ if (!empty($start_date) && !empty($end_date)) {
 }
 
 $data =
-"INSERT INTO event (nama, waktu_mulai, waktu_berakhir, lokasi, deskripsi, kapasitas, tgl_mulai, tgl_akhir, gambar) 
-	VALUES (:nama, :waktu_mulai, :waktu_berakhir, :lokasi, :deskripsi, :kapasitas, :tgl_mulai, :tgl_akhir, :gambar);";
+"INSERT INTO event (nama, waktu_mulai, waktu_akhir, lokasi, deskripsi, kapasitas, tgl_mulai, tgl_akhir, gambar) 
+	VALUES (:nama, :waktu_mulai, :waktu_akhir, :lokasi, :deskripsi, :kapasitas, :tgl_mulai, :tgl_akhir, :gambar);";
 
 $stmt = connectDB()->prepare($data);
 $params = [
 	":nama" => $event_name,
 	":waktu_mulai" => $start_time,
-	":waktu_berakhir" => $end_time,
+	":waktu_akhir" => $end_time,
 	":lokasi" => $loc,
 	":deskripsi" => $desc,
 	":kapasitas" => $cap,

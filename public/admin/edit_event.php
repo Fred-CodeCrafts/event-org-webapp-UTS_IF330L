@@ -1,11 +1,9 @@
 <?php
-// $dsn = "mysql:host=localhost;dbname=uts";
-// $kunci = new PDO($dsn, "root", "");
 require_once('../DB.php');
 
-if (isset($_GET["ID_event"])) {
-	$id = $_GET["ID_event"];
-	$sql = "SELECT * FROM event WHERE ID_event = :id";
+if (isset($_GET["event_id"])) {
+	$id = $_GET["event_id"];
+	$sql = "SELECT * FROM event WHERE event_id = :id";
 	$stmt = connectDB()->prepare($sql);
 	$stmt->bindParam(":id", $id, PDO::PARAM_INT);
 	$stmt->execute();
@@ -19,7 +17,7 @@ if (isset($_GET["ID_event"])) {
 }
 
 if (isset($_POST["submit"])) {
-	$id = $_POST["ID_event"];
+	$id = $_POST["event_id"];
 
 	$cap = isset($_POST["cap"])
 		? filter_var($_POST["cap"], FILTER_SANITIZE_NUMBER_INT)
@@ -94,13 +92,13 @@ if (isset($_POST["submit"])) {
 	}
 
 	$data =
-		"UPDATE event SET nama=:nama, waktu_mulai=:waktu_mulai, waktu_berakhir=:waktu_berakhir, lokasi=:lokasi, deskripsi=:deskripsi, kapasitas=:kapasitas, tgl_mulai=:tgl_mulai, tgl_akhir=:tgl_akhir, gambar=:gambar WHERE ID_event=:id";
+		"UPDATE event SET nama=:nama, waktu_mulai=:waktu_mulai, waktu_akhir=:waktu_akhir, lokasi=:lokasi, deskripsi=:deskripsi, kapasitas=:kapasitas, tgl_mulai=:tgl_mulai, tgl_akhir=:tgl_akhir, gambar=:gambar WHERE event_id=:id";
 
 	$stmt = connectDB()->prepare($data);
 	$params = [
 		":nama" => $event_name,
 		":waktu_mulai" => $start_time,
-		":waktu_berakhir" => $end_time,
+		":waktu_akhir" => $end_time,
 		":lokasi" => $loc,
 		":deskripsi" => $desc,
 		":kapasitas" => $cap,
@@ -149,8 +147,8 @@ if (isset($_POST["submit"])) {
   <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
     <form id="eventForm" action="" method="post" enctype="multipart/form-data">
-      <input type="hidden" name="ID_event" value="<?= htmlspecialchars(
-      	$row["ID_event"]
+      <input type="hidden" name="event_id" value="<?= htmlspecialchars(
+      	$row["event_id"]
       ) ?>">
       <div class="space-y-12">
         <div class="border-b border-gray-900/10 pb-12">
@@ -259,7 +257,7 @@ if (isset($_POST["submit"])) {
                     </svg>
                   </div>
                   <input type="time" name="end_time" id="end-time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= htmlspecialchars(
-                  	$row["waktu_berakhir"]
+                  	$row["waktu_akhir"]
                   ) ?>" required>
                 </div>
               </div>

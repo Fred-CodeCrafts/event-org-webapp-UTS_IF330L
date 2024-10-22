@@ -1,13 +1,11 @@
 <?php
-// $dsn = "mysql:host=localhost;dbname=uts";
-// $kunci = new PDO($dsn, "root", "");
 require_once('../DB.php');
 
 $sql = "SELECT * FROM event";
 $hasil = connectDB()->query($sql);
 
-$currentDate = date('Y-m-d');
 date_default_timezone_set('Asia/Jakarta');
+$currentDate = date('Y-m-d');
 $currentTime = date('H:i');
 
 ?>
@@ -68,17 +66,17 @@ $currentTime = date('H:i');
                             $tgl_mulai = $row['tgl_mulai'];
                             $waktu_mulai = $row['waktu_mulai'];
                             $tgl_akhir = $row['tgl_akhir'];
-                            $waktu_berakhir = $row['waktu_berakhir'];
-                            
+                            $waktu_akhir = $row['waktu_akhir'];
+
                             $currentTimestamp = strtotime("$currentDate $currentTime");
                             $startTimestamp = strtotime("$tgl_mulai $waktu_mulai");
-                            $endTimestamp = strtotime("$tgl_akhir $waktu_berakhir");
+                            $endTimestamp = strtotime("$tgl_akhir $waktu_akhir");
                         ?>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td class="w-4 p-4">
                                     <div class="flex items-center">
-                                        <input id="checkbox-table-search-<?= $row['ID_event'] ?>" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-<?= $row['ID_event'] ?>" class="sr-only">checkbox</label>
+                                        <input id="checkbox-table-search-<?= urlencode($row['event_id']) ?>" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-<?= urlencode($row['event_id']) ?>" class="sr-only">checkbox</label>
                                     </div>
                                 </td>
                                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -87,7 +85,7 @@ $currentTime = date('H:i');
                                     </div>
                                 </th>
                                 <td class="px-6 py-4">
-                                    <?= htmlspecialchars($row['ID_event']) ?>
+                                    <?= htmlspecialchars($row['event_id']) ?>
                                 </td>
                                 <td class="px-6 py-4">
                                     <?php if ($currentTimestamp >= $startTimestamp && $currentTimestamp <= $endTimestamp) { ?>
@@ -101,40 +99,45 @@ $currentTime = date('H:i');
                                     <?php } ?>
                                 </td>
                                 <td class="px-6 py-6 flex flex-row">
-                                <button data-modal-target="default-modal-<?= $row['ID_event'] ?>" 
-                                        data-modal-toggle="default-modal-<?= $row['ID_event'] ?>" 
-                                        class="p-2 mr-3 items-center flex flex-row text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
-                                    <svg class="w-10 xl:w-6 h-10 xl:h-6 text-gray-800 mr-2 responsive-svg dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"/>
-                                    </svg>
-                                    View event
-                                </button>
-                                    <a href="edit_event.php?ID_event=<?= urlencode($row['ID_event']) ?>" class="flex flex-row p-2 mr-3  items-center text-white bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-amber-300 dark:focus:ring-amber-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                    <button data-modal-target="default-modal-<?= urlencode($row['event_id']) ?>" 
+                                            data-modal-toggle="default-modal-<?= urlencode($row['event_id']) ?>" 
+                                            class="p-2 mr-3 items-center flex flex-row text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                        <svg class="w-10 xl:w-6 h-10 xl:h-6  mr-2 responsive-svg text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"/>
+                                        </svg>
+                                        View event
+                                    </button>
+                                    <a href="edit_event.php?event_id=<?= urlencode($row['event_id']) ?>" class="flex flex-row p-2 mr-3  items-center text-white bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-amber-300 dark:focus:ring-amber-800 font-medium rounded-lg text-sm px-5 py-2.5">
                                         <svg class="w-10 xl:w-6 h-10 xl:h-6 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                                         </svg>
                                         Edit event
                                     </a>
-                                    <button data-modal-target="popup-modal-<?= $row['ID_event'] ?>" data-modal-toggle="popup-modal-<?= $row['ID_event'] ?>" class="items-center flex flex-row text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5">
-                                        <svg class="w-10 xl:w-6 h-10 xl:h-6 text-gray-800 mr-2 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <button data-modal-target="popup-modal-<?= urlencode($row['event_id']) ?>" data-modal-toggle="popup-modal-<?= urlencode($row['event_id']) ?>" class="items-center flex flex-row text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                        <svg class="w-10 xl:w-6 h-10 xl:h-6 mr-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                                         </svg>
                                         Delete event
                                     </button>
-                                    
+                                    <a href="event_participants.php?event_id=<?= urlencode($row['event_id']) ?>" class="ml-3 flex flex-row p-2 mr-3  items-center text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                        <svg class="w-10 xl:w-6 h-10 xl:h-6 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
+                                        </svg>
+                                        View users
+                                    </a>
                                 </td>
                             </tr>
-                            <div id="default-modal-<?= $row['ID_event'] ?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                            <div id="default-modal-<?= urlencode($row['event_id']) ?>" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-2xl max-h-full">
                                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                             <div>
                                                 <img src="gambar/<?= $row['gambar']?>" class="max-w-64 max-h-64 rounded-lg">
-                                                <h3 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white">
+                                                <h3 class="mt-3 text-xl font-semibold text-gray-900 dark:text-white" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;">
                                                     <?= htmlspecialchars($row['nama']) ?>
                                                 </h3>
                                             </div>
-                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal-<?= $row['ID_event'] ?>">
+                                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal-<?= urlencode($row['event_id']) ?>">
                                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                                 </svg>
@@ -143,7 +146,7 @@ $currentTime = date('H:i');
                                         </div>
                                         <div class="p-4 md:p-5 space-y-4">
                                             <div class="flex flex-row">
-                                                <p class="text-base leading-relaxed text-white">
+                                                <p class="text-base leading-relaxed text-white" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;">
                                                     <?= $row['deskripsi'] ?>
                                                 </p>
                                             </div>
@@ -168,26 +171,30 @@ $currentTime = date('H:i');
                                                 <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
                                             </svg>
                                                 <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                    Event ended: <?= $row['tgl_akhir'] ?> <?= $row['waktu_berakhir'] ?>
+                                                    Event ended: <?= $row['tgl_akhir'] ?> <?= $row['waktu_akhir'] ?>
                                                 </p>
                                             </div>
                                             <div class="flex flex-row">
-                                                <svg class="w-6 h-6  mr-2 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
-                                                </svg>
-                                                <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                                    Location: <?= $row['lokasi'] ?>
-                                                </p>
+                                                <div class="flex flex-row">
+                                                    <div class="flex-shrink-0 w-6 h-6 mr-2">
+                                                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.8 13.938h-.011a7 7 0 1 0-11.464.144h-.016l.14.171c.1.127.2.251.3.371L12 21l5.13-6.248c.194-.209.374-.429.54-.659l.13-.155Z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;">
+                                                        Location: <?= $row['lokasi'] ?>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="popup-modal-<?= $row['ID_event'] ?>" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                            <div id="popup-modal-<?= urlencode($row['event_id']) ?>" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                                 <div class="relative p-4 w-full max-w-md max-h-full">
                                     <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal-<?= $row['ID_event'] ?>">
+                                        <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal-<?= urlencode($row['event_id']) ?>">
                                             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                             </svg>
@@ -199,12 +206,12 @@ $currentTime = date('H:i');
                                             </svg>
                                             <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this event?</h3>
                                             <form action="delete_event.php" method="post">
-                                                <input type="hidden" value="<?= $row['ID_event'] ?>" name="id">
-                                                <button data-modal-hide="popup-modal-<?= $row['ID_event'] ?>" type="submit" id="confirm-redirect" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                                                <input type="hidden" value="<?= urlencode($row['event_id']) ?>" name="id">
+                                                <button data-modal-hide="popup-modal-<?= urlencode($row['event_id']) ?>" type="submit" id="confirm-redirect" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                                                     Yes, I'm sure
                                                 </button>
                                             </form>
-                                            <button data-modal-hide="popup-modal-<?= $row['ID_event'] ?>" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
+                                            <button data-modal-hide="popup-modal-<?= urlencode($row['event_id']) ?>" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">No, cancel</button>
                                         </div>
                                     </div>
                                 </div>

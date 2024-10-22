@@ -1,7 +1,7 @@
 <?php 
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'uts');
+define('DB_NAME', 'utslec');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
