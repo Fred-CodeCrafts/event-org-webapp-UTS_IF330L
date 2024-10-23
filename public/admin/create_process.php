@@ -76,8 +76,8 @@ if (!empty($start_date) && !empty($end_date)) {
 }
 
 $data =
-"INSERT INTO event (nama, waktu_mulai, waktu_akhir, lokasi, deskripsi, kapasitas, tgl_mulai, tgl_akhir, gambar) 
-	VALUES (:nama, :waktu_mulai, :waktu_akhir, :lokasi, :deskripsi, :kapasitas, :tgl_mulai, :tgl_akhir, :gambar);";
+"INSERT INTO event (nama, waktu_mulai, waktu_akhir, lokasi, deskripsi, kapasitas, tgl_mulai, tgl_akhir, gambar, status_toogle) 
+	VALUES (:nama, :waktu_mulai, :waktu_akhir, :lokasi, :deskripsi, :kapasitas, :tgl_mulai, :tgl_akhir, :gambar, :status_toogle);";
 
 $stmt = connectDB()->prepare($data);
 $params = [
@@ -89,6 +89,7 @@ $params = [
 	":kapasitas" => $cap,
 	":tgl_mulai" => $start_date,
 	":tgl_akhir" => $end_date,
+	":status_toogle" => 1,
 ];
 
 if (isset($_FILES["img"]) && $_FILES["img"]["error"] == UPLOAD_ERR_OK) {

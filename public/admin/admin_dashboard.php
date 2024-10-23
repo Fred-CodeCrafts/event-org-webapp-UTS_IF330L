@@ -88,9 +88,13 @@ $currentTime = date('H:i');
                                     <?= htmlspecialchars($row['event_id']) ?>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <?php if ($currentTimestamp >= $startTimestamp && $currentTimestamp <= $endTimestamp) { ?>
+                                    <?php if (($currentTimestamp >= $startTimestamp && $currentTimestamp <= $endTimestamp) && $row['status_toogle'] == 1) { ?>
                                         <div class="flex items-center">
                                             <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Open
+                                        </div>
+                                    <?php } else if($row['status_toogle'] == 2) { ?>
+                                        <div class="flex items-center">
+                                            <div class="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> Canceled
                                         </div>
                                     <?php } else { ?>
                                         <div class="flex items-center">

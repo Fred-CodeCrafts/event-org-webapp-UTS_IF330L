@@ -20,27 +20,31 @@ if (isset($_POST["submit"])) {
 	$id = $_POST["event_id"];
 
 	$cap = isset($_POST["cap"])
-		? filter_var($_POST["cap"], FILTER_SANITIZE_NUMBER_INT)
-		: "";
+		? filter_var($_POST["cap"], FILTER_SANITIZE_NUMBER_INT) : "";
+
 	$event_name = isset($_POST["event_name"])
-		? htmlspecialchars($_POST["event_name"])
-		: "";
-	$loc = isset($_POST["loc"]) ? htmlspecialchars($_POST["loc"]) : "";
+		? htmlspecialchars($_POST["event_name"]) : "";
+
+	$loc = isset($_POST["loc"]) ? 
+    htmlspecialchars($_POST["loc"]) : "";
+
 	$start_time = isset($_POST["start_time"])
-		? htmlspecialchars($_POST["start_time"])
-		: "";
+		? htmlspecialchars($_POST["start_time"]) : "";
+
 	$end_time = isset($_POST["end_time"])
-		? htmlspecialchars($_POST["end_time"])
-		: "";
+		? htmlspecialchars($_POST["end_time"]) : "";
+
 	$start_date = isset($_POST["start_date"])
-		? htmlspecialchars($_POST["start_date"])
-		: "";
+		? htmlspecialchars($_POST["start_date"]) : "";
+
 	$end_date = isset($_POST["end_date"])
-		? htmlspecialchars($_POST["end_date"])
-		: "";
-	$desc = isset($_POST["desc"]) ? htmlspecialchars($_POST["desc"]) : "";
+		? htmlspecialchars($_POST["end_date"]) : "";
+
+	$desc = isset($_POST["desc"]) 
+    ? htmlspecialchars($_POST["desc"]) : "";
 
   $oldImage = $row['gambar'];
+  $status = $_POST['status'];
 
   if ($start_time == $end_time) {
     $end_time = date("H:i", strtotime($end_time) + 60 * 60);
@@ -92,7 +96,7 @@ if (isset($_POST["submit"])) {
 	}
 
 	$data =
-		"UPDATE event SET nama=:nama, waktu_mulai=:waktu_mulai, waktu_akhir=:waktu_akhir, lokasi=:lokasi, deskripsi=:deskripsi, kapasitas=:kapasitas, tgl_mulai=:tgl_mulai, tgl_akhir=:tgl_akhir, gambar=:gambar WHERE event_id=:id";
+		"UPDATE event SET nama=:nama, waktu_mulai=:waktu_mulai, waktu_akhir=:waktu_akhir, lokasi=:lokasi, deskripsi=:deskripsi, kapasitas=:kapasitas, tgl_mulai=:tgl_mulai, tgl_akhir=:tgl_akhir, gambar=:gambar, status_toogle=:status_toogle WHERE event_id=:id";
 
 	$stmt = connectDB()->prepare($data);
 	$params = [
@@ -104,6 +108,7 @@ if (isset($_POST["submit"])) {
 		":kapasitas" => $cap,
 		":tgl_mulai" => $start_date,
 		":tgl_akhir" => $end_date,
+		":status_toogle" => $status,
 		":id" => $id,
 	];
 
@@ -161,7 +166,7 @@ if (isset($_POST["submit"])) {
             <div class="text-sm font-semibold text-gray-900"><a href="admin_dashboard.php">Back</a></div>
           </div>
 
-          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 grid-cols-6">
+          <div class="mt-10 grid gap-x-6 gap-y-8 grid-cols-6">
             <div class="col-span-6">
               <label for="event_name" class="block text-sm font-medium leading-6 text-gray-900">Event name</label>
               <div class="mt-2">
@@ -233,7 +238,7 @@ if (isset($_POST["submit"])) {
 
             <div class="col-span-3">
               <div>
-                <label for="start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start time:</label>
+                <label for="start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start time</label>
                 <div class="relative">
                   <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -249,7 +254,7 @@ if (isset($_POST["submit"])) {
 
             <div class="col-span-3">
               <div>
-                <label for="end_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End time:</label>
+                <label for="end_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End time</label>
                 <div class="relative">
                   <div class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none">
                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -261,6 +266,15 @@ if (isset($_POST["submit"])) {
                   ) ?>" required>
                 </div>
               </div>
+            </div>
+            
+            <div class="col-span-6">
+              <label for="Status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event status</label>
+              <select id="Status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="1">Open</option>
+                <option value="0">Closed</option>
+                <option value="2">Canceled</option>
+              </select>
             </div>
 
             <div class="col-span-6">
@@ -294,7 +308,7 @@ if (isset($_POST["submit"])) {
             <h3 class="font-bold text-lg">Edit confirmation</h3>
             <p class="py-4">Are you sure you want to change this event?</p>
             <div class="modal-action">
-                <button type="button" class="btn btn-ghost" onclick="closeConfirmModal()">Cancel</button>
+                <button type="button" class="text-gray-600 mr-2" onclick="closeConfirmModal()">Cancel</button>
                 <button type="button" onclick="confirmSubmit()" class="btn btn-primary">Change</button>
             </div>
         </form>
