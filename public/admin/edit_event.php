@@ -130,7 +130,7 @@ if (isset($_POST["submit"])) {
 
   $stmt->execute($params);
 
-  header("Location: event_management.php");
+  header("Location: admin_dashboard.php");
   exit();
 }
 ?>
@@ -158,7 +158,7 @@ if (isset($_POST["submit"])) {
             <div class="flex-1">
               <p class="text-sm text-gray-600">Change the event details below.</p>
             </div>
-            <div class="text-sm font-semibold text-gray-900"><a href="event_management.php">Back</a></div>
+            <div class="text-sm font-semibold text-gray-900"><a href="admin_dashboard.php">Back</a></div>
           </div>
 
           <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 grid-cols-6">
@@ -283,7 +283,7 @@ if (isset($_POST["submit"])) {
           </div>
         </div>
         <div class="mt-6 flex items-center justify-end gap-x-6">
-          <div class="text-sm font-semibold leading-6 text-gray-900"><a href="event_management.php">Back</a></div>
+          <div class="text-sm font-semibold leading-6 text-gray-900"><a href="admin_dashboard.php">Back</a></div>
           <button type="button" onclick="openConfirmModal()" class="rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500">Change event</button>
         </div>
       </div>
