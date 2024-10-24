@@ -152,7 +152,7 @@ else {
                             mysqli_stmt_execute($stmt);
                         }
                     }
-                    header("Location: ../../../../../../user/home.php");
+                    header("Location: ../user/home.php");
                     exit();
                 } 
             } 
