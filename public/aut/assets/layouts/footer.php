@@ -13,6 +13,8 @@
 <script src="../assets/vendor/js/popper.min.js"></script>
 <script src="../assets/vendor/bootstrap-4.3.1/js/bootstrap.min.js"></script>
 
+<!-- tailwind -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script> -->
 
 </body>
 

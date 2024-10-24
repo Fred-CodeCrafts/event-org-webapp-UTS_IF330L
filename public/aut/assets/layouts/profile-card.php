@@ -23,7 +23,7 @@
             </small>
         </h4>
     </div>
-    
+        
     <?php } else { ?>
         <p>kartunya rusak</p>
     <?php } ?>

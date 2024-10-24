@@ -2,13 +2,13 @@
 require_once('../DB.php');
 
 $sql = "SELECT * FROM event";
-$event = connectDB()->query($sql);
+$result = connectDB()->query($sql);
 
-$sql = "SELECT * FROM user WHERE user_id = :id";
-$stmt = connectDB()->prepare($sql);
-$stmt->bindParam(":user_id", $id, PDO::PARAM_INT);
-$stmt->execute();
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+// $sql = "SELECT * FROM user WHERE user_id = :id";
+// $stmt = connectDB()->prepare($sql);
+// $stmt->bindParam(":user_id", $id, PDO::PARAM_INT);
+// $stmt->execute();
+// $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -23,7 +23,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 </head>
 <body>
     <!-- yg ilang ad di event details -->
-
+    
     <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -58,7 +58,7 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
                 </button>
             </div>
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
-                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-event md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                     <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
                 </li>
@@ -70,7 +70,15 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
         </div>
     </nav>
 
-
+    <h1>Upcoming Events</h1>
+    <ul>
+        <?php while($event = $result->fetch(PDO::FETCH_ASSOC)): ?>
+            <li>
+                <?php echo $event['event_id']; ?>
+                <?php echo $event['event_name']; ?>
+            </li>
+        <?php endwhile; ?>
+    </ul>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
 </body>
