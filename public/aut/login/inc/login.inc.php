@@ -103,12 +103,7 @@ else {
                     $_SESSION['headline'] = $row['headline'];
                     $_SESSION['bio'] = $row['bio'];
                     $_SESSION['profile_image'] = $row['profile_image'];
-                    // $_SESSION['banner_image'] = $row['banner_image'];
-                    // $_SESSION['user_level'] = $row['user_level'];
-                    // $_SESSION['verified_at'] = $row['verified_at'];
                     $_SESSION['created_at'] = $row['created_at'];
-                    // $_SESSION['updated_at'] = $row['updated_at'];
-                    // $_SESSION['deleted_at'] = $row['deleted_at'];
                     $_SESSION['last_login_at'] = $row['last_login_at'];
 
 
