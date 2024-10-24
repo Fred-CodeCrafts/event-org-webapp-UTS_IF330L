@@ -83,17 +83,17 @@ else {
                 } 
                 else if ($pwdCheck == true) {
 
-                    session_start();
+                    // session_start();
 
                     
-                    if($row['verified_at'] != NULL){
+                    // if($row['verified_at'] != NULL){
 
-                        $_SESSION['auth'] = 'verified';
-                    } else{
+                    //     $_SESSION['auth'] = 'verified';
+                    // } else{
 
-                        $_SESSION['auth'] = 'loggedin';
-                    }
-
+                    //     $_SESSION['auth'] = 'loggedin';
+                    // }
+                    $_SESSION['auth'] = 'loggedin';
                     $_SESSION['id'] = $row['id'];
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['email'] = $row['email'];
@@ -152,8 +152,7 @@ else {
                             mysqli_stmt_execute($stmt);
                         }
                     }
-
-                    header("Location: ../../home/");
+                    header("Location: ../../../../../../user/home.php");
                     exit();
                 } 
             } 

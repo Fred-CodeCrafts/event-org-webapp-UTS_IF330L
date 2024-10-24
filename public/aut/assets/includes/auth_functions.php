@@ -21,7 +21,7 @@ function check_logged_out() {
     }
     else {
 
-        header("Location: ../home/");
+        header("Location: ../../../../user/home.php");
         exit();
     }
 }
@@ -32,7 +32,7 @@ function force_login($email) {
 
     require '../assets/setup/db.inc.php';
     
-    $sql = "SELECT * FROM users WHERE email=?;";
+    $sql = "SELECT * FROM user WHERE email=?;";
     $stmt = mysqli_stmt_init($conn);
 
     if (!mysqli_stmt_prepare($stmt, $sql)) {
@@ -51,8 +51,7 @@ function force_login($email) {
             return false;
         }
         else {
-                $_SESSION['auth'] = 'loggedin';
-
+            $_SESSION['auth'] = 'loggedin';
             $_SESSION['id'] = $row['id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['email'] = $row['email'];
@@ -73,8 +72,6 @@ function force_login($email) {
 }
 
 function check_remember_me() {
-
-    
 
     require '../assets/setup/db.inc.php';
     

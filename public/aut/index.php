@@ -2,7 +2,7 @@
 
 if (isset($_SESSION['auth'])) {
 
-    header("Location: home");
+    header("Location: ./user/home.php");
     exit();
 }
 else {
