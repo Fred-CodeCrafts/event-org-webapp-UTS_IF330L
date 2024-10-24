@@ -16,7 +16,6 @@ check_remember_me();
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?php echo TITLE . ' | ' . APP_NAME; ?></title>
