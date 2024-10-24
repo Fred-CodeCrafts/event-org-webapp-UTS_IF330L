@@ -1,6 +1,6 @@
 <?php
 require_once('../DB.php');
-var_dump($_POST);
+
 if(isset($_POST['checkbox_delete'])){
     $delete = $_POST['checkbox_delete'];
     foreach ($delete as $eventId) {
@@ -19,4 +19,4 @@ if(isset($_POST['checkbox_delete'])){
     $stmt->execute(array($id));
 }
 
-// header("Location: admin_dashboard.php");
+header("Location: admin_dashboard.php");

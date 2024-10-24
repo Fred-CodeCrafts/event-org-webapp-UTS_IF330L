@@ -1,7 +1,7 @@
 <?php
 require_once('../DB.php');
 
-$sql = "SELECT user_id,username,email,nama FROM user";
+$sql = "SELECT user_id,username,email,first_name, last_name FROM user";
 $hasil = connectDB()->query($sql);
 
 ?>
@@ -61,7 +61,7 @@ $hasil = connectDB()->query($sql);
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="ps-2">
-                                        <div class="text-base font-semibold"><?= htmlspecialchars($row['nama']) ?></div>
+                                        <div class="text-base font-semibold"><?= htmlspecialchars($row['first_name']) .' '. htmlspecialchars($row['last_name'])?></div>
                                     </div>
                                 </th>
                                 <td class="px-6 py-4">

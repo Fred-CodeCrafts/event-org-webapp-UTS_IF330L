@@ -1,8 +1,0 @@
-ID event
-
-$closestatus = $pdo->prepare(" 
-    UPDATE events 
-    SET status = 'closed' 
-    WHERE status = 'open' 
-    AND TIMESTAMPDIFF(MINUTE, CONCAT(event_date, ' ', event_time), NOW()) >= 1 
-");
