@@ -1,3 +1,4 @@
+-- Active: 1728354925976@@127.0.0.1@3306@utslec
 --@block
 CREATE TABLE `event` (
   `event_id` int(11) NOT NULL AUTO_INCREMENT,
