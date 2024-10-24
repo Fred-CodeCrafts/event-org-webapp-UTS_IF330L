@@ -271,9 +271,9 @@ if (isset($_POST["submit"])) {
             <div class="col-span-6">
               <label for="Status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event status</label>
               <select id="Status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option value="1">Open</option>
-                <option value="0">Closed</option>
-                <option value="2">Canceled</option>
+                <option value="1" <?= $row['status_toogle'] == 1 ? ' selected' : '' ?>>Open</option>
+                <option value="0" <?= $row['status_toogle'] == 0 ? ' selected' : '' ?>>Closed</option>
+                <option value="2" <?= $row['status_toogle'] == 2 ? ' selected' : '' ?>>Canceled</option>
               </select>
             </div>
 
@@ -316,7 +316,6 @@ if (isset($_POST["submit"])) {
 
     <script src="../node_modules/flowbite/dist/flowbite.min.js"></script>
     <script>
-      let deleteEventId = null;
 
       function openConfirmModal() {
         const form = document.getElementById('eventForm');
@@ -336,93 +335,126 @@ if (isset($_POST["submit"])) {
         document.getElementById('confirmModal').showModal();
       }
 
-        function closeConfirmModal() {
-            document.getElementById('confirmModal').close();
-        }
+      function closeConfirmModal() {
+          document.getElementById('confirmModal').close();
+      }
 
-        function confirmSubmit() {
-            const myEventForm = document.getElementById('eventForm');
-            if (!myEventForm) {
-                console.error("Form not found!");
-                return;
-            }
+      function confirmSubmit() {
+          const myEventForm = document.getElementById('eventForm');
+          if (!myEventForm) {
+              console.error("Form not found!");
+              return;
+          }
 
-            const submitInput = document.createElement('input');
-            submitInput.type = 'hidden';
-            submitInput.name = 'submit';
-            submitInput.value = '1';
-            myEventForm.appendChild(submitInput);
+          const submitInput = document.createElement('input');
+          submitInput.type = 'hidden';
+          submitInput.name = 'submit';
+          submitInput.value = '1';
+          myEventForm.appendChild(submitInput);
 
-            HTMLFormElement.prototype.submit.call(myEventForm);
+          HTMLFormElement.prototype.submit.call(myEventForm);
 
-            closeConfirmModal();
-        }
+          closeConfirmModal();
+      }
 
-        document.getElementById('eventForm').addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            this.submit(); 
-        });
+      document.getElementById('eventForm').addEventListener('submit', function(event) {
+          event.preventDefault(); 
+          this.submit(); 
+      });
 
       document.addEventListener("DOMContentLoaded", function() {
         const startDateInput = document.getElementById("datepicker-range-start");
         const endDateInput = document.getElementById("datepicker-range-end");
         const startTimeInput = document.getElementById("start-time");
         const endTimeInput = document.getElementById("end-time");
-
-        new Pikaday({
+        
+        const startPicker = new Pikaday({
           field: startDateInput,
-          format: 'MM/DD/YYYY', 
-          minDate: new Date(),  
-          onSelect: function() {
-            endDatePicker.setMinDate(this.getDate()); 
+          format: 'MM/DD/YYYY',
+          minDate: new Date(),
+          onSelect: function(date) {
+            if (endPicker) {
+              endPicker.setMinDate(date);
+              endPicker.setStartRange(date);
+              
+              const endDate = endPicker.getDate();
+              if (endDate && date > endDate) {
+                endPicker.setDate(date);
+              }
+            }
+            
+            endDateInput.removeAttribute('disabled');
+            validateDates();
           }
         });
 
-        const endDatePicker = new Pikaday({
+        const endPicker = new Pikaday({
           field: endDateInput,
           format: 'MM/DD/YYYY',
-          minDate: new Date(),  
-          onSelect: function() {
-            if (startDateInput.value > endDateInput.value) {
-              endDateInput.value = startDateInput.value;
+          minDate: new Date(),
+          onSelect: function(date) {
+            if (startPicker) {
+              startPicker.setEndRange(date);
             }
+            validateDates();
           }
         });
 
+        endDateInput.setAttribute('disabled', 'disabled');
 
         function validateDates() {
-          const startDate = new Date(startDateInput.value);
-          const endDate = new Date(endDateInput.value);
+          const startDate = startPicker.getDate();
+          const endDate = endPicker.getDate();
 
-          if (startDate > endDate) {
-            endDateInput.value = startDateInput.value;
+          if (startDate && endDate && startDate > endDate) {
+            endPicker.setDate(startDate);
           }
 
           validateTimes();
         }
 
         function validateTimes() {
-          const startDate = new Date(startDateInput.value);
-          const endDate = new Date(endDateInput.value);
-          if (startDate.getTime() === endDate.getTime()) {
+          const startDate = startPicker.getDate();
+          const endDate = endPicker.getDate();
+          
+          if (startDate && endDate && startDate.toDateString() === endDate.toDateString()) {
             const startTime = startTimeInput.value;
             const endTime = endTimeInput.value;
-            const [startHour, startMinute] = startTime.split(":").map(Number);
-            const [endHour, endMinute] = endTime.split(":").map(Number);
-            const startDateTime = new Date(startDate);
-            startDateTime.setHours(startHour, startMinute);
-            const endDateTime = new Date(endDate);
-            endDateTime.setHours(endHour, endMinute);
-            if (startDateTime >= endDateTime) {
-              const tempTime = startTime;
-              startTimeInput.value = endTime;
-              endTimeInput.value = tempTime;
+            
+            if (startTime && endTime) {
+              const [startHour, startMinute] = startTime.split(":").map(Number);
+              const [endHour, endMinute] = endTime.split(":").map(Number);
+              
+              const startDateTime = new Date(startDate);
+              startDateTime.setHours(startHour, startMinute);
+              
+              const endDateTime = new Date(endDate);
+              endDateTime.setHours(endHour, endMinute);
+
+              if (startDateTime >= endDateTime) {
+                const newEndTime = new Date(startDateTime);
+                newEndTime.setHours(startDateTime.getHours() + 1);
+                
+                endTimeInput.value = 
+                  `${String(newEndTime.getHours()).padStart(2, '0')}:${String(newEndTime.getMinutes()).padStart(2, '0')}`;
+              }
             }
           }
         }
 
         startTimeInput.addEventListener("change", validateTimes);
         endTimeInput.addEventListener("change", validateTimes);
+
+        if (startDateInput.value) {
+          const initialStartDate = new Date(startDateInput.value);
+          startPicker.setDate(initialStartDate);
+          endDateInput.removeAttribute('disabled');
+        }
+        
+        if (endDateInput.value) {
+          const initialEndDate = new Date(endDateInput.value);
+          endPicker.setDate(initialEndDate);
+        }
       });
 
       function handleFileUpload(event) {
@@ -434,7 +466,6 @@ if (isset($_POST["submit"])) {
         const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
         if (file && !allowedTypes.includes(file.type)) {
             alert("Please upload a valid image file (JPEG, PNG, GIF, WebP).");
-            // fileInput.value = ''; 
             iconAndText.style.display = 'block';
             return;
         }

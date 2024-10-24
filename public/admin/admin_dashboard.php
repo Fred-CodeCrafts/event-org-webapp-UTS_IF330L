@@ -26,6 +26,7 @@ $currentTime = date('H:i');
             <div class="btn bg-green-500"><a href="create_event.html">Create Event</a></div>
         </div>
     </div>
+    <button id="delButton" class="btn btn-primary">Delete selected</button>
 
     <div class="mt-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
         <div class="flex items-center space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900 p-6">
@@ -73,12 +74,18 @@ $currentTime = date('H:i');
                             $endTimestamp = strtotime("$tgl_akhir $waktu_akhir");
                         ?>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                <td class="w-4 p-4">
-                                    <div class="flex items-center">
-                                        <input id="checkbox-table-search-<?= urlencode($row['event_id']) ?>" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="checkbox-table-search-<?= urlencode($row['event_id']) ?>" class="sr-only">checkbox</label>
-                                    </div>
-                                </td>
+                                <form id="checkDel" action="delete_event.php" method="post">
+                                    <td class="w-4 p-4">
+                                        <div class="flex items-center">
+                                            <input id="checkbox-table-search-<?= urlencode($row['event_id']) ?>" 
+                                                name="checkbox_delete[]" 
+                                                value="<?= urlencode($row['event_id']) ?>" 
+                                                type="checkbox" 
+                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkbox-table-search-<?= urlencode($row['event_id']) ?>" class="sr-only">checkbox</label>
+                                        </div>
+                                    </td>
+                                </form>
                                 <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="ps-2">
                                         <div class="text-base font-semibold"><?= htmlspecialchars($row['nama']) ?></div>
@@ -110,8 +117,8 @@ $currentTime = date('H:i');
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"/>
                                         </svg>
                                         View event
-                                    </button>
-                                    <a href="edit_event.php?event_id=<?= urlencode($row['event_id']) ?>" class="flex flex-row p-2 mr-3  items-center text-white bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-amber-300 dark:focus:ring-amber-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                    </button> 
+                                    <a href="edit_event.php?event_id=<?= urlencode($row['event_id']) ?>" class=" <?= $row['status_toogle'] == 2 ? 'pointer-events-none opacity-50' : '' ?> flex flex-row p-2 mr-3 items-center text-white bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 font-medium rounded-lg text-sm px-5 py-2.5">
                                         <svg class="w-10 xl:w-6 h-10 xl:h-6 text-white mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"/>
                                         </svg>
@@ -235,6 +242,10 @@ $currentTime = date('H:i');
         function submitForm() {
             document.getElementById('hiddenForm').submit();
         }
+
+        document.getElementById('delButton').addEventListener('click', function() {
+            document.getElementById('checkDel').submit(); 
+        });
     </script>
 </body>
 
