@@ -17,8 +17,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE DATABASE utslec;
-USE utslec;
 --
 -- Database: `utslec`
 --
@@ -113,8 +111,7 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
-  ADD COLUMN password_reset_token VARCHAR(255) DEFAULT NULL,
-ADD COLUMN password_reset_expires_at TIMESTAMP NULL DEFAULT NULL;
+
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -140,9 +137,6 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
-ALTER TABLE user
-ADD COLUMN password_reset_token VARCHAR(255) DEFAULT NULL,
-ADD COLUMN password_reset_expires_at TIMESTAMP NULL DEFAULT NULL;
 
 --
 -- Constraints for table `event_participants`
@@ -155,3 +149,17 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--@block
+CREATE TABLE admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--@block
+INSERT INTO admin (username, email, password) VALUES ('admin', 'admin@example.com', 'admin123');
+--@block
+ALTER TABLE admin ADD last_login_at TIMESTAMP DEFAULT NULL;
