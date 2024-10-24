@@ -1,7 +1,7 @@
 <?php
 require_once('../DB.php');
 
-$sql = "SELECT e.event_name as eventName,u.nama as nama, u.username as user,u.email as email
+$sql = "SELECT e.event_name as eventName,u.username as nama, u.username as user,u.email as email
         FROM event_participants ep
         JOIN event e
         USING (event_id)
