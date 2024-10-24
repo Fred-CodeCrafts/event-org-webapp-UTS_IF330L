@@ -1,7 +1,7 @@
 <?php
-include 'ConnectDB.php';
+require_once('../DB.php');
 
-$user_id = 1; // Assume user is logged in and has user_id 1
+$user_id = $_POST['user_id'];
 $event_id = $_POST['event_id'];
 
 $sql = "DELETE FROM registrations WHERE user_id = $user_id AND event_id = $event_id";
