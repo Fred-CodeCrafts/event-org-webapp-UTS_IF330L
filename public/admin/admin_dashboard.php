@@ -41,7 +41,7 @@ $currentTime = date('H:i');
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-50 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for events">
+                            <input onkeyup="searchTable()" type="text" id="searchInput" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-50 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for events">
                         </div>
                     </div>
                     <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5">
@@ -50,7 +50,7 @@ $currentTime = date('H:i');
                 </div>
                 <?php if ($hasil->rowCount() > 0): ?>
                     <div class="relative overflow-x-auto p-6">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <table id="tablee" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
@@ -75,7 +75,7 @@ $currentTime = date('H:i');
                                 ?>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                         <td class="w-4 p-4">
-                                            <div class="flex items-center">
+                                            <div class="flex justify-center items-center">
                                                 <input name="checkbox_delete[]" 
                                                     value="<?= htmlspecialchars($row['event_id']) ?>" 
                                                     type="checkbox" 
@@ -144,7 +144,7 @@ $currentTime = date('H:i');
                                         </td>
                                     </tr>
         
-                                    <!-- Event Modal  PLEASE JE KASIH event_name BENER NAPA-->
+                                    <!-- Event Modal -->
                                     <div id="default-modal-<?= htmlspecialchars($row['event_id']) ?>" 
                                         tabindex="-1" 
                                         aria-hidden="true" 
@@ -265,64 +265,180 @@ $currentTime = date('H:i');
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-    <!-- <script src="../../node_modules/flowbite/dist/flowbite.min.js"></script> -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        
-        // Function to hide modal
-        function hideModal(modal) {
-            if (!modal) return;
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            document.body.classList.remove('overflow-hidden');
-        }
+        function searchTable() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
 
-        function initializeModals() {
-            const modals = new Map(); 
-
-            document.querySelectorAll('[data-modal-toggle]').forEach(button => {
-                const modalId = button.getAttribute('data-modal-target');
-                const modal = document.getElementById(modalId);
-                
-                if (!modal) return;
-
-                const showModalHandler = (e) => {
-                    e.preventDefault();
-                    modal.classList.remove('hidden');
-                    modal.classList.add('flex');
-                    document.body.classList.add('overflow-hidden');
-
-                    modal.addEventListener('click', function outsideClickHandler(e) {
-                        if (e.target === modal) {
-                            hideModal(modal);
-                            modal.removeEventListener('click', outsideClickHandler);
-                        }
-                    });
-                };
-
-                button.addEventListener('click', showModalHandler);
-
-                const closeButtons = modal.querySelectorAll('[data-modal-hide]');
-                closeButtons.forEach(closeButton => {
-                    closeButton.addEventListener('click', function() {
-                        hideModal(modal);
-                    });
-                });
-            });
-
-            const escapeHandler = (e) => {
-                if (e.key === 'Escape') {
-                    const visibleModal = document.querySelector('.fixed:not(.hidden)');
-                    if (visibleModal) {
-                        hideModal(visibleModal);
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    } else {
+                    tr[i].style.display = "none";
                     }
                 }
-            };
-            document.addEventListener('keydown', escapeHandler);
+            }
+        }
+  
+        function setupTableSearch() {
+            const searchInput = document.getElementById('table-search-users');
+            const tableBody = document.querySelector('table tbody'); 
+            const tableRows = tableBody.getElementsByTagName('th');
+
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+
+                Array.from(tableRows).forEach(row => {
+                    let textContent = '';
+                    
+                    const cells = Array.from(row.getElementsByTagName('td')).slice(1); 
+                    
+                    cells.forEach(cell => {
+                        textContent += cell.textContent.toLowerCase() + ' ';
+                    });
+
+                    if (searchTerm === '' || textContent.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                updateNoResults(tableBody, Array.from(tableRows).every(row => row.style.display === 'none'));
+            });
         }
 
-        initializeModals();
-    });
+        function updateNoResults(tableBody, noResults) {
+            const existingMessage = document.getElementById('no-results-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            if (noResults) {
+                const noResultsRow = document.createElement('tr');
+                noResultsRow.id = 'no-results-message';
+                noResultsRow.innerHTML = `
+                    <td colspan="100%" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                        No matching results found
+                    </td>
+                `;
+                tableBody.appendChild(noResultsRow);
+            }
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const debouncedSearch = debounce(setupTableSearch, 300);
+            debouncedSearch();
+        });
+
+        const selectAllCheckbox = document.getElementById('select-all');
+        const eventCheckboxes = document.getElementsByClassName('event-checkbox');
+
+        selectAllCheckbox.addEventListener('change', function() {
+            const isChecked = this.checked;
+            
+            for (let checkbox of eventCheckboxes) {
+                checkbox.checked = isChecked;
+            }
+        });
+
+        Array.from(eventCheckboxes).forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const allChecked = Array.from(eventCheckboxes).every(cb => cb.checked);
+                
+                selectAllCheckbox.checked = allChecked;
+                
+                if (!allChecked && Array.from(eventCheckboxes).some(cb => cb.checked)) {
+                    selectAllCheckbox.indeterminate = true;
+                } else {
+                    selectAllCheckbox.indeterminate = false;
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            function hideModal(modal) {
+                if (!modal) return;
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            function initializeModals() {
+                const modals = new Map(); 
+
+                document.querySelectorAll('[data-modal-toggle]').forEach(button => {
+                    const modalId = button.getAttribute('data-modal-target');
+                    const modal = document.getElementById(modalId);
+                    
+                    if (!modal) return;
+
+                    const showModalHandler = (e) => {
+                        e.preventDefault();
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                        document.body.classList.add('overflow-hidden');
+
+                        modal.addEventListener('click', function outsideClickHandler(e) {
+                            if (e.target === modal) {
+                                hideModal(modal);
+                                modal.removeEventListener('click', outsideClickHandler);
+                            }
+                        });
+                    };
+
+                    button.addEventListener('click', showModalHandler);
+
+                    const closeButtons = modal.querySelectorAll('[data-modal-hide]');
+                    closeButtons.forEach(closeButton => {
+                        closeButton.addEventListener('click', function() {
+                            hideModal(modal);
+                        });
+                    });
+                });
+
+                const escapeHandler = (e) => {
+                    if (e.key === 'Escape') {
+                        const visibleModal = document.querySelector('.fixed:not(.hidden)');
+                        if (visibleModal) {
+                            hideModal(visibleModal);
+                        }
+                    }
+                };
+                document.addEventListener('keydown', escapeHandler);
+            }
+
+            initializeModals();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form').forEach(function(form) {
+                form.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

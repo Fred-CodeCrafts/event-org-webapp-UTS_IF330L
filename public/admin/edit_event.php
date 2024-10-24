@@ -308,7 +308,7 @@ if (isset($_POST["submit"])) {
             <h3 class="font-bold text-lg">Edit confirmation</h3>
             <p class="py-4">Are you sure you want to change this event?</p>
             <div class="modal-action">
-                <button type="button" class="text-gray-600 mr-2" onclick="closeConfirmModal()">Cancel</button>
+                <button type="button" class="text-white mr-2" onclick="closeConfirmModal()">Cancel</button>
                 <button type="button" onclick="confirmSubmit()" class="btn btn-primary">Change</button>
             </div>
         </form>
