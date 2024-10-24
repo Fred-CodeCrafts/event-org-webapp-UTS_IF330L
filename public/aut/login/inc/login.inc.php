@@ -35,7 +35,7 @@ else {
 
     if (empty($username) || empty($password)) {
 
-        $_SESSION['STATUS']['loginstatus'] = 'fields cannot be empty';
+        $_SESSION['STATUS']['loginstatus'] = 'Fields cannot be empty';
         header("Location: ../");
         exit();
     } 
@@ -148,7 +148,7 @@ else {
             } 
             else {
 
-                $_SESSION['ERRORS']['nouser'] = 'username does not exist';
+                $_SESSION['ERRORS']['nouser'] = 'Username does not exist';
                 header("Location: ../");
                 exit();
             }
