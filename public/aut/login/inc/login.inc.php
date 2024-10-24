@@ -95,6 +95,10 @@ else {
                     $_SESSION['profile_image'] = $row['profile_image'];
                     $_SESSION['created_at'] = $row['created_at'];
                     $_SESSION['last_login_at'] = $row['last_login_at'];
+                    $_SESSION['remember_me_selector'] = $row['remember_me_selector'];
+                    $_SESSION['remember_me_token'] = $row['remember_me_token'];
+                    $_SESSION['password_reset_token'] = $row['password_reset_token'];
+                    $_SESSION['password_reset_expires_at'] = $row['password_reset_expires_at'];
 
 
                      if (isset($_POST['rememberme'])) {
