@@ -83,16 +83,6 @@ else {
                 } 
                 else if ($pwdCheck == true) {
 
-                    // session_start();
-
-                    
-                    // if($row['verified_at'] != NULL){
-
-                    //     $_SESSION['auth'] = 'verified';
-                    // } else{
-
-                    //     $_SESSION['auth'] = 'loggedin';
-                    // }
                     $_SESSION['auth'] = 'loggedin';
                     $_SESSION['id'] = $row['user_id'];
                     $_SESSION['username'] = $row['username'];
@@ -152,7 +142,7 @@ else {
                             mysqli_stmt_execute($stmt);
                         }
                     }
-                    header("Location: /utslec/public/aut/user/home.php");
+                    header("Location: ../../user/home.php");
                     exit();
                 } 
             } 

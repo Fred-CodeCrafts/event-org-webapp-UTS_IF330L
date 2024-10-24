@@ -1,32 +1,24 @@
-<?php
-
+<?php 
 define('TITLE', "Login");
-require '../assets/includes/auth_functions.php';
-require '../assets/includes/security_functions.php';
-
-generate_csrf_token();
-check_remember_me();
-
+include '../assets/layouts/header.php';
 check_logged_out();
 ?>
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
-
-        </div>
-        <div class="col-sm-4">
+        <div class="col-md-4"></div>
+        <div class="col-lg-4">
             <form class="form-auth" action="inc/login.inc.php" method="post">
 
                 <?php insert_csrf_token(); ?>
-                <h6 class="h3 mb-3 font-weight-normal text-muted text-center">Login to your Account</h6>
+                
+                <h6 class="h3 mt-3 mb-3 font-weight-normal text-muted text-center">Login to your Account</h6>
 
                 <div class="text-center mb-3">
                     <small class="text-success font-weight-bold">
                         <?php
                             if (isset($_SESSION['STATUS']['loginstatus']))
                                 echo $_SESSION['STATUS']['loginstatus'];
-
                         ?>
                     </small>
                 </div>
@@ -60,22 +52,15 @@ check_logged_out();
                     </div>
                 </div>
 
-                <button class="btn btn-lg btn-primary btn-block" type="submit" value="loginsubmit" name="loginsubmit">Login</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="loginsubmit">Login</button>
+
                 <p class="mt-3 text-muted text-center"><a href="../register/">Register</a></p>
                 <p class="mt-3 text-muted text-center"><a href="../reset-password/">Forgot password?</a></p>
-                <!-- New Admin Login Link -->
                 <p class="mt-3 text-muted text-center"><a href="admin.php">Sign in as Admin</a></p>
-                
             </form>
         </div>
-        <div class="col-sm-4">
-
-        </div>
+        <div class="col-md-4"></div>
     </div>
 </div>
 
-<?php
-
-include '../assets/layouts/footer.php';
-
-?>
+<?php include '../assets/layouts/footer.php'; ?>
