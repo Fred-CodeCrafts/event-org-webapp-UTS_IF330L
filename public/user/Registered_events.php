@@ -1,7 +1,7 @@
 <?php
-include 'ConnectDB.php';
+require_once('../DB.php');
 
-$user_id = 1; 
+$user_id = $_POST['user_id']; 
 
 $sql = "SELECT e.id, e.name, e.description, e.schedule, e.location 
         FROM events e 
