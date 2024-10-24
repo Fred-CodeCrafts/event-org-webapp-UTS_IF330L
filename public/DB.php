@@ -5,6 +5,12 @@ define('DB_NAME', 'utslec');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 
+require '../assets/includes/auth_functions.php';
+require '../assets/includes/security_functions.php';
+
+generate_csrf_token();
+check_remember_me();
+
 // kalau mau pake ini tinggal connectDB()->....
 function connectDB() {
     try {

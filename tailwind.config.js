@@ -2,6 +2,8 @@
 module.exports = {
   content: [
     './public/*/*.php',
+    './public/*/*/*.php',
+    './public/*/*/*/*.php',
     './src/*.css'
   ],
   theme: {
