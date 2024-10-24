@@ -16,13 +16,18 @@ $hasil = connectDB()->query($sql);
     <title>Registered Users</title>
 </head>
 
-<body class="bg-gray-100 px-10">
-    <a href="admin_dashboard.php" class="flex flex-row mr-4 p-2 items-center text-white bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-amber-300 dark:focus:ring-amber-800 font-medium rounded-lg text-sm px-5 py-2.5">
-        <svg class="w-6 h-6 mr-3 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+<body class="bg-gray-100 p-10">
+    <a href="admin_dashboard.php" class="btn bg-blue-500 inline-flex items-center p-3 text-white rounded-lg">
+        <svg class="w-6 h-6 mr-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
         </svg>
         Back to dashboard
     </a>
+
+    <!-- <a href="admin_dashboard.php" class="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-amber-300 dark:focus:ring-amber-800 font-medium rounded-lg text-sm px-5 py-2.5">
+        
+        
+    </a> -->
     <div class="mt-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
         <div class="flex items-center space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900 p-6">
             <label for="table-search" class="sr-only">Search</label>
