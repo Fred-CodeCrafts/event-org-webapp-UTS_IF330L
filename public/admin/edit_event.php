@@ -149,7 +149,7 @@ if (isset($_POST["submit"])) {
     <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
     <title>Edit Event</title>
   </head>
-  <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <body class="bg-gray-200 min-h-screen flex items-center justify-center p-4">
 
     <form id="eventForm" action="" method="post" enctype="multipart/form-data">
       <input type="hidden" name="event_id" value="<?= htmlspecialchars(

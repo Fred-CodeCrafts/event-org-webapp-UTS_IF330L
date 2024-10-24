@@ -20,7 +20,7 @@ $currentTime = date('H:i');
     <title>Admin Dashboard</title>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-875">
     <div class="p-10">
         
         <div class="mt-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
