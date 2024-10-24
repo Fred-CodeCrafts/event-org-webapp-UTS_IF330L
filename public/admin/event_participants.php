@@ -1,7 +1,7 @@
 <?php
 require_once('../DB.php');
 
-$sql = "SELECT e.nama as eventName,u.nama as nama, u.username as user,u.email as email
+$sql = "SELECT e.event_name as eventName,u.nama as nama, u.username as user,u.email as email
         FROM event_participants ep
         JOIN event e
         USING (event_id)
@@ -20,7 +20,7 @@ if (!empty($participants)) {
     $name = $stmt->fetch(PDO::FETCH_ASSOC);
     $eventName = $name['eventName'];
 }else{
-    $sql = "SELECT nama as eventName FROM event ep WHERE event_id = :id";
+    $sql = "SELECT event_name as eventName FROM event WHERE event_id = :id";
     $stmt = connectDB()->prepare($sql);
     $id = $_GET["event_id"];
     $stmt->bindParam(":id", $id, PDO::PARAM_INT);

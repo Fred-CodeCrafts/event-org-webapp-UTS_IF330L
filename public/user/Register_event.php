@@ -1,7 +1,7 @@
 <?php
 include 'ConnectDB.php';
 
-$user_id = 1; // Assume user is logged in and has user_id 1
+$user_id = 1; 
 $event_id = $_POST['event_id'];
 
 $sql = "INSERT INTO registrations (user_id, event_id) VALUES ($user_id, $event_id)";

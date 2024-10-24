@@ -76,19 +76,19 @@ if (!empty($start_date) && !empty($end_date)) {
 }
 
 $data =
-"INSERT INTO event (nama, waktu_mulai, waktu_akhir, lokasi, deskripsi, kapasitas, tgl_mulai, tgl_akhir, gambar, status_toogle) 
-	VALUES (:nama, :waktu_mulai, :waktu_akhir, :lokasi, :deskripsi, :kapasitas, :tgl_mulai, :tgl_akhir, :gambar, :status_toogle);";
+"INSERT INTO event (event_name, start_time, end_time, location, description, capacity, start_date, end_date, image, status_toogle) 
+	VALUES (:event_name, :start_time, :end_time, :location, :description, :capacity, :start_date, :end_date, :image, :status_toogle);";
 
 $stmt = connectDB()->prepare($data);
 $params = [
-	":nama" => $event_name,
-	":waktu_mulai" => $start_time,
-	":waktu_akhir" => $end_time,
-	":lokasi" => $loc,
-	":deskripsi" => $desc,
-	":kapasitas" => $cap,
-	":tgl_mulai" => $start_date,
-	":tgl_akhir" => $end_date,
+	":event_name" => $event_name,
+	":start_time" => $start_time,
+	":end_time" => $end_time,
+	":location" => $loc,
+	":description" => $desc,
+	":capacity" => $cap,
+	":start_date" => $start_date,
+	":end_date" => $end_date,
 	":status_toogle" => 1,
 ];
 
@@ -103,8 +103,8 @@ if (isset($_FILES["img"]) && $_FILES["img"]["error"] == UPLOAD_ERR_OK) {
 	if (in_array($fileExt, $allowedExtensions)) {
 	$uploadPath = "gambar/" . $fileName;
 	if (move_uploaded_file($tempName, $uploadPath)) {
-		$data .= ", gambar=:gambar";
-		$params[":gambar"] = $fileName;
+		$data .= ", image=:image";
+		$params[":image"] = $fileName;
 	}
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 include 'ConnectDB.php';
 
-$user_id = 1; // Assume user is logged in and has user_id 1
+$user_id = 1; 
 
 $sql = "SELECT e.id, e.name, e.description, e.schedule, e.location 
         FROM events e 

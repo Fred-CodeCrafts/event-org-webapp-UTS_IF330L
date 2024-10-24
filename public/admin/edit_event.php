@@ -43,7 +43,7 @@ if (isset($_POST["submit"])) {
 	$desc = isset($_POST["desc"]) 
     ? htmlspecialchars($_POST["desc"]) : "";
 
-  $oldImage = $row['gambar'];
+  $oldImage = $row['image'];
   $status = $_POST['status'];
 
   if ($start_time == $end_time) {
@@ -96,18 +96,18 @@ if (isset($_POST["submit"])) {
 	}
 
 	$data =
-		"UPDATE event SET nama=:nama, waktu_mulai=:waktu_mulai, waktu_akhir=:waktu_akhir, lokasi=:lokasi, deskripsi=:deskripsi, kapasitas=:kapasitas, tgl_mulai=:tgl_mulai, tgl_akhir=:tgl_akhir, gambar=:gambar, status_toogle=:status_toogle WHERE event_id=:id";
+		"UPDATE event SET event_name=:event_name, start_time=:start_time, end_time=:end_time, location=:location, description=:description, capacity=:capacity, start_date=:start_date, end_time=:end_time, image=:image, status_toogle=:status_toogle WHERE event_id=:id";
 
 	$stmt = connectDB()->prepare($data);
 	$params = [
-		":nama" => $event_name,
-		":waktu_mulai" => $start_time,
-		":waktu_akhir" => $end_time,
-		":lokasi" => $loc,
-		":deskripsi" => $desc,
-		":kapasitas" => $cap,
-		":tgl_mulai" => $start_date,
-		":tgl_akhir" => $end_date,
+		":event_name" => $event_name,
+		":start_time" => $start_time,
+		":end_time" => $end_time,
+		":location" => $loc,
+		":description" => $desc,
+		":capacity" => $cap,
+		":start_date" => $start_date,
+		":end_time" => $end_date,
 		":status_toogle" => $status,
 		":id" => $id,
 	];
@@ -123,14 +123,14 @@ if (isset($_POST["submit"])) {
     if (in_array($fileExt, $allowedExtensions)) {
       $uploadPath = "gambar/" . $fileName;
       if (move_uploaded_file($tempName, $uploadPath)) {
-        $data .= ", gambar=:gambar";
-        $params[":gambar"] = $fileName;
+        $data .= ", image=:image";
+        $params[":image"] = $fileName;
       }
     }else{
-      $params[":gambar"] = $oldImage;
+      $params[":image"] = $oldImage;
     }
   }else{
-    $params[":gambar"] = $oldImage;
+    $params[":image"] = $oldImage;
   }
 
   $stmt->execute($params);
@@ -172,7 +172,7 @@ if (isset($_POST["submit"])) {
               <div class="mt-2">
                 <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
                   <input onclick="this.select()" type="text" name="event_name" id="event_name" autocomplete="event_name" class="block flex-1 border-0 bg-white py-1.5 pl-1 rounded-md text-gray-900 placeholder:text-white-400 focus:ring-blue-500 sm:text-sm sm:leading-6" value="<?= htmlspecialchars(
-                  	$row["nama"]
+                  	$row["event_name"]
                   ) ?>" required>
                 </div>
               </div>
@@ -183,7 +183,7 @@ if (isset($_POST["submit"])) {
               <div class="mt-2">
                 <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
                   <input onclick="this.select()" type="number" name="cap" id="cap" autocomplete="cap" class="block flex-1 border-0 bg-white py-1.5 pl-1 rounded-md text-gray-900 placeholder:text-white-400 focus:ring-blue-500 sm:text-sm sm:leading-6" value="<?= htmlspecialchars(
-                  	$row["kapasitas"]
+                  	$row["capacity"]
                   ) ?>" required min="1">
                 </div>
               </div>
@@ -194,7 +194,7 @@ if (isset($_POST["submit"])) {
               <div class="mt-2">
                 <div class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-500">
                   <input onclick="this.select()" type="text" name="loc" id="loc" autocomplete="loc" class="block flex-1 border-0 bg-white py-1.5 pl-1 rounded-md text-gray-900 placeholder:text-white-400 focus:ring-blue-500 sm:text-sm sm:leading-6" value="<?= htmlspecialchars(
-                  	$row["lokasi"]
+                  	$row["location"]
                   ) ?>" required>
                 </div>
               </div>
@@ -205,7 +205,7 @@ if (isset($_POST["submit"])) {
               <p class="mt-1 text-sm leading-6 text-gray-600">Write some words to describe the event.</p>
               <div class="mt-2">
                 <textarea onclick="this.select()" id="desc" name="desc" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6" required><?= htmlspecialchars(
-                	$row["deskripsi"]
+                	$row["description"]
                 ) ?></textarea>
               </div>
             </div>
@@ -218,7 +218,7 @@ if (isset($_POST["submit"])) {
                         <input id="datepicker-range-start" name="start_date" type="text" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             value="<?= htmlspecialchars(
-                              $row['tgl_mulai']
+                              $row['start_date']
                             ) ?>" required readonly>
                     </div>
                   </div>
@@ -229,7 +229,7 @@ if (isset($_POST["submit"])) {
                         <input id="datepicker-range-end" name="end_date" type="text" 
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             value="<?= htmlspecialchars(
-                              $row['tgl_akhir']
+                              $row['end_date']
                             ) ?>" required readonly>
                     </div>
                   </div>
@@ -246,7 +246,7 @@ if (isset($_POST["submit"])) {
                     </svg>
                   </div>
                   <input type="time" name="start_time" id="start-time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= htmlspecialchars(
-                  	$row["waktu_mulai"]
+                  	$row["start_time"]
                   ) ?>" required>
                 </div>
               </div>
@@ -262,7 +262,7 @@ if (isset($_POST["submit"])) {
                     </svg>
                   </div>
                   <input type="time" name="end_time" id="end-time" class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<?= htmlspecialchars(
-                  	$row["waktu_akhir"]
+                  	$row["end_time"]
                   ) ?>" required>
                 </div>
               </div>
@@ -282,7 +282,7 @@ if (isset($_POST["submit"])) {
               <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                   <div class="text-center">
                       <div id="image-preview" class="mt-4">
-                          <img id="preview-img" src="gambar/<?= htmlspecialchars($row['gambar']); ?>" alt="Preview Image" class="max-w-xs rounded-lg">
+                          <img id="preview-img" src="gambar/<?= htmlspecialchars($row['image']); ?>" alt="Preview Image" class="max-w-xs rounded-lg">
                       </div>
                       <div class="mt-4 flex text-sm leading-6 text-gray-600 items-center justify-center">
                           <label for="img" class="relative cursor-pointer rounded-md bg-white font-semibold text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 hover:text-indigo-500">
