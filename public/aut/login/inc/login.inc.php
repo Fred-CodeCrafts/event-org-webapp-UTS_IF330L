@@ -94,7 +94,7 @@ else {
                     //     $_SESSION['auth'] = 'loggedin';
                     // }
                     $_SESSION['auth'] = 'loggedin';
-                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['id'] = $row['user_id'];
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['email'] = $row['email'];
                     $_SESSION['first_name'] = $row['first_name'];
@@ -152,7 +152,7 @@ else {
                             mysqli_stmt_execute($stmt);
                         }
                     }
-                    header("Location: ../../../../../../user/home.php");
+                    header("Location: /utslec/public/aut/user/home.php");
                     exit();
                 } 
             } 

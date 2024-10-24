@@ -2,7 +2,7 @@
 
 if (isset($_SESSION['auth'])) {
 
-    header("Location: ./user/home.php");
+    header("Location: /utslec/public/aut/user/home.php");
     exit();
 }
 else {

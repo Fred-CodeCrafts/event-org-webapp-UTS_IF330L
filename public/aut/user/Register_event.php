@@ -1,6 +1,6 @@
 <?php
 require_once('config.php');
-
+var_dump($_SESSION);
 $user_id = $_SESSION['id']; 
 $event_id = $_GET['event_id'];
 
@@ -12,16 +12,8 @@ $params = [
 	":event_id" => $event_id
 ];
 
+$_SESSION['registered'] = 1;
 $stmt->execute($params);
 header("Location: home.php");
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Event Registration</title>
-</head>
-<body>
-    <a href="events.php">Back to Events</a>
-</body>
-</html>
