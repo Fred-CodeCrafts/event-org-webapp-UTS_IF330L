@@ -113,7 +113,8 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
-
+  ADD COLUMN password_reset_token VARCHAR(255) DEFAULT NULL,
+ADD COLUMN password_reset_expires_at TIMESTAMP NULL DEFAULT NULL;
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -139,6 +140,9 @@ ALTER TABLE `user`
 --
 -- Constraints for dumped tables
 --
+ALTER TABLE user
+ADD COLUMN password_reset_token VARCHAR(255) DEFAULT NULL,
+ADD COLUMN password_reset_expires_at TIMESTAMP NULL DEFAULT NULL;
 
 --
 -- Constraints for table `event_participants`
