@@ -36,7 +36,7 @@ if (isset($_POST['resentsend'])) {
         exit();
     }
 
-    $sql = "SELECT id FROM users WHERE email=?;";
+    $sql = "SELECT user_id FROM user WHERE email=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         $_SESSION['ERRORS']['sqlerror'] = 'SQL ERROR';
@@ -53,10 +53,8 @@ if (isset($_POST['resentsend'])) {
             exit();
         }
     }
-
-    // Insert reset token into the database
     $hashedToken = password_hash($token, PASSWORD_DEFAULT);
-    $sql = "UPDATE users SET password_reset_token=?, password_reset_expires_at=? WHERE email=?;";
+    $sql = "UPDATE user SET password_reset_token=?, password_reset_expires_at=? WHERE email=?;";
     $stmt = mysqli_stmt_init($conn);
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         $_SESSION['ERRORS']['sqlerror'] = 'SQL ERROR';
