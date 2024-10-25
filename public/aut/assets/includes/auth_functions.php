@@ -21,7 +21,7 @@ function check_logged_out() {
     }
     else {
 
-        header("Location: ../");
+        header("Location: ../user/home.php");
         exit();
     }
 }
