@@ -21,7 +21,7 @@ function check_logged_out() {
     }
     else {
 
-        header("Location: ../user/home.php");
+        header("Location: /utslec/public/aut/user/home.php");
         exit();
     }
 }
