@@ -38,7 +38,7 @@ if (isset($_POST['resetsubmit'])) {
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
-    $sql = "SELECT * FROM users WHERE password_reset_token = ? OR password_reset_expires_at > NOW();";
+    $sql = "SELECT * FROM user WHERE password_reset_token = ? OR password_reset_expires_at > NOW();";
     $stmt = mysqli_stmt_init($conn);
 
     if (!mysqli_stmt_prepare($stmt, $sql)) {
