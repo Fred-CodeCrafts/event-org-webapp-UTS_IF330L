@@ -9,23 +9,43 @@ date_default_timezone_set('Asia/Jakarta');
 $currentDate = date('Y-m-d');
 $currentTime = date('H:i');
 
-function ongoingEvents(){
-    global $events;
-    foreach( $events as $event ) { 
-        global $currentTime;
-        global $currentDate;
+$user_id = $_SESSION['user_id']; 
+
+$registeredEventIds = [];
+$sql = "SELECT event_id FROM event_participants WHERE user_id = :user_id";
+$stmt = connectDB()->prepare($sql);
+$stmt->bindParam(':user_id', $user_id);
+$stmt->execute();
+$registeredEvents = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($registeredEvents as $event) {
+    $registeredEventIds[] = $event['event_id'];
+}
+
+function ongoingEvents() {
+    global $events, $currentDate, $currentTime;
+    $isOngoing = false;
+
+    foreach ($events as $event) {
         $start_date = $event['start_date'];
         $start_time = $event['start_time'];
         $end_date = $event['end_date'];
         $end_time = $event['end_time'];
-    
+
         $currentTimestamp = strtotime("$currentDate $currentTime");
         $startTimestamp = strtotime("$start_date $start_time");
         $endTimestamp = strtotime("$end_date $end_time");
-        if(($currentTimestamp >= $startTimestamp && $currentTimestamp <= $endTimestamp) && $event['status_toogle'] == 1){
-            return true;
+
+        if (($currentTimestamp >= $startTimestamp && $currentTimestamp <= $endTimestamp) && $event['status_toogle'] == 1) {
+            $isOngoing = true;
         }
     }
+    return $isOngoing;
+}
+
+function registered($event_id) {
+    global $registeredEventIds;
+    return in_array($event_id, $registeredEventIds);
 }
 
 ?>
@@ -35,7 +55,7 @@ function ongoingEvents(){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../styles.css" rel="stylesheet">
+    <link href="../../styles.css" rel="stylesheet">
     <title>Harsa - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
@@ -45,6 +65,12 @@ function ongoingEvents(){
     <?php require 'user_navbar.php'; ?>
 
     <div class="mt-32">
+    <!-- Search Bar -->
+    <div class="flex justify-center mb-6">
+            <input type="text" id="searchInput" placeholder="Search events..." 
+                   class="px-4 py-2 border rounded-lg w-3/4 max-w-md" 
+                   oninput="filterEvents()">
+    </div>
         <?php if(ongoingEvents()) { ?>
         <h1 class="text-center text-4xl font-extrabold mb-9 text-purple-600">Upcoming Events</h1>
         <div class="flex mx-11 justify-center">
@@ -61,11 +87,12 @@ function ongoingEvents(){
                     $endTimestamp = strtotime("$end_date $end_time");
 
                     if(($currentTimestamp >= $startTimestamp && $currentTimestamp <= $endTimestamp) && $event['status_toogle'] == 1) { ?>
-                    <div class="max-w-80 xs:max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700">
+                    <div class="max-w-80 xs:max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 event-card"
+                        data-event-name="<?= htmlspecialchars($event['event_name']) ?>">
                         <img class="rounded-t-lg" src="<?= '../../admin/gambar/' . $event['image'] ?>" />
                         <div class="p-5">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><?= $event['event_name'] ?></h5>
-                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;"><?= $event['description'] ?></p>
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?= $event['description'] ?></p>
                             <button type="button"
                                 data-modal-target="default-modal-<?= htmlspecialchars($event['event_id']) ?>"
                                 data-modal-toggle="default-modal-<?= htmlspecialchars($event['event_id']) ?>"
@@ -147,8 +174,14 @@ function ongoingEvents(){
                                         </div>
                                     </div>
                                     <!-- Modal footer -->
-                                    <div class="flex items-center justify-end px-2  space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                        <button type="button" class="text-white mt-4 bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 transition-transform duration-300 hover:scale-105">Register</button>
+                                    <div class="flex flex-row-reverse">
+                                        <a href="register_event.php?event_id=<?= htmlspecialchars($event['event_id']) ?>"
+                                            class="<?= registered($event['event_id']) ? 'pointer-events-none opacity-50' : '' ?> ml-3 flex flex-row p-2 mr-1 items-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                                            <?= registered($event['event_id']) ? 'Registered' : 'Register' ?>
+                                            <svg class="w-6 h-6 ml-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M18 5.05h1a2 2 0 0 1 2 2v2H3v-2a2 2 0 0 1 2-2h1v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1h3v-1a1 1 0 1 1 2 0v1Zm-15 6v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8H3ZM11 18a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -168,6 +201,22 @@ function ongoingEvents(){
 
         
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+        <script>
+
+        function filterEvents() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const events = Array.from(document.querySelectorAll('.event-card'));
+
+            events.forEach(event => event.style.display = 'none'); 
+            
+            const filteredEvents = events.filter(event => 
+                event.getAttribute('data-event-name').toLowerCase().includes(searchInput)
+            );
+
+            filteredEvents.slice(0, 5).forEach(event => event.style.display = 'block'); 
+        }
+
+    </script>
 
 </body>
 
