@@ -4,7 +4,7 @@ if (isset($_POST['update-profile'])) {
 
     if( !empty($oldPassword) && !empty($newpassword) && !empty($passwordrepeat)){
 
-        $sql = "SELECT password FROM users WHERE id=?;";
+        $sql = "SELECT password FROM user WHERE user_id=?;";
         $stmt = mysqli_stmt_init($conn);
         
         if (!mysqli_stmt_prepare($stmt, $sql)) {
