@@ -132,7 +132,7 @@ function registered($event_id) {
                                 <!-- Modal body -->
                                 <div class="p-4 md:p-5 space-y-4">
                                     <div class="flex flex-row">
-                                        <p class="text-base text-gray-800 dark:text-white leading-relaxed" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;">
+                                        <p class="text-base text-gray-800 leading-relaxed" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;">
                                             <?= $event['description'] ?>
                                         </p>
                                     </div>
