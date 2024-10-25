@@ -1,10 +1,9 @@
--- Active: 1727685349527@@127.0.0.1@3306@utslec
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2024 at 12:46 PM
+-- Generation Time: Oct 25, 2024 at 05:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -21,6 +20,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `utslec`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admin`
+--
+
+INSERT INTO `admin` (`id`, `username`, `email`, `password`, `created_at`) VALUES
+(1, 'admin', 'admin@example.com', 'admin123', '2024-10-25 03:34:53');
 
 -- --------------------------------------------------------
 
@@ -47,7 +67,7 @@ CREATE TABLE `event` (
 --
 
 INSERT INTO `event` (`event_id`, `event_name`, `description`, `capacity`, `location`, `start_date`, `end_date`, `start_time`, `end_time`, `image`, `status_toogle`) VALUES
-(1, 'sdf', 'sdf', 234, 'sdf', '2024-10-29', '2024-10-30', '00:00:00', '00:00:00', 'bg.jpg', 1);
+(8, 'nama event4', '2adlkajkwdkawjdj2adlkajkwdkawjdj 2adlkajkwdkawjdj 2adlkajkwdkawjdj 2adlkajkwdkawjdj 2adlkajkwdkawjdj', 12, '2', '2024-10-25', '2024-10-28', '00:00:00', '00:20:24', 'bg.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -58,8 +78,17 @@ INSERT INTO `event` (`event_id`, `event_name`, `description`, `capacity`, `locat
 CREATE TABLE `event_participants` (
   `participant_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `event_id` int(11) NOT NULL
+  `event_id` int(11) NOT NULL,
+  `registration_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `event_participants`
+--
+
+INSERT INTO `event_participants` (`participant_id`, `user_id`, `event_id`, `registration_date`) VALUES
+(18, 3, 8, '2024-10-25'),
+(23, 5, 8, '2024-10-25');
 
 -- --------------------------------------------------------
 
@@ -81,19 +110,30 @@ CREATE TABLE `user` (
   `profile_image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `password_reset_token` varchar(255) DEFAULT NULL,
-  `password_reset_expires_at` datetime DEFAULT NULL
+  `password_reset_expires_at` datetime DEFAULT NULL,
+  `remember_me_selector` varchar(255) DEFAULT NULL,
+  `remember_me_token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `last_login_at`, `first_name`, `last_name`, `gender`, `headline`, `bio`, `profile_image`, `created_at`) VALUES
-(1, 'jeo', '$2y$10$vd4avMH8UenmLAiyPYTU5.s7.sQ3RhhtMv/lKj6kdLaJdOz/QR9Wa', 'jennifer.jeo@student.umn.ac.id', '2024-10-24 15:27:49', '', '', 'f', '', '', '_defaultUser.png', '2024-10-24 08:27:45');
+INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `last_login_at`, `first_name`, `last_name`, `gender`, `headline`, `bio`, `profile_image`, `created_at`, `password_reset_token`, `password_reset_expires_at`, `remember_me_selector`, `remember_me_token`) VALUES
+(3, 'jeoo', '$2y$10$0eMXqMvy8oaRBw.GYCMiEuzCGGqPA0dk0Ardl0QbpXHQFoGuXA6ii', 'jenniferjeo06@gmail.com', '2024-10-25 19:18:03', '', '', NULL, '', '', '_defaultUser.png', '2024-10-25 12:05:23', NULL, NULL, 'c96f71fa0791ec75', '$2y$10$bunyRjasf6XRSKDnnLhN7exe8jbQrfof1pMeaV1MaQK/S/oQCaC/W'),
+(5, '1234', '$2y$10$rY1SZSz655JmBYfX/A0xDue0COdeg0BXMpiCh6/BXNpd20wDxeSKe', '1234@gmail.com', '2024-10-25 20:36:17', '', '', NULL, '', '', '_defaultUser.png', '2024-10-25 13:36:13', NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `event`
@@ -114,33 +154,39 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
+
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `event`
 --
 ALTER TABLE `event`
-  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `event_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `event_participants`
 --
 ALTER TABLE `event_participants`
-  MODIFY `participant_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `participant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
 --
 -- Constraints for dumped tables
 --
-ALTER TABLE `user`
-ADD COLUMN remember_me_selector varchar(255) DEFAULT NULL,
-ADD COLUMN remember_me_token varchar(255) DEFAULT NULL;
+
 --
 -- Constraints for table `event_participants`
 --
@@ -152,17 +198,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
---@block
-CREATE TABLE admin (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
---@block
-INSERT INTO admin (username, email, password) VALUES ('admin', 'admin@example.com', 'admin123');
---@block
-ALTER TABLE admin ADD last_login_at DATETIME NULL;
