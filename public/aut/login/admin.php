@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['loginsubmit'])) {
                 $_SESSION['last_login_at'] = $row['created_at'];
 
                 // Update last login time
-                $sql = "UPDATE admin SET last_login_at=NOW() WHERE id=?;";
-                $stmt = mysqli_stmt_init($conn);
-                if (mysqli_stmt_prepare($stmt, $sql)) {
-                    mysqli_stmt_bind_param($stmt, "i", $row['id']);
-                    mysqli_stmt_execute($stmt);
-                }
+                // $sql = "UPDATE admin SET last_login_at=NOW() WHERE id=?;";
+                // $stmt = mysqli_stmt_init($conn);
+                // if (mysqli_stmt_prepare($stmt, $sql)) {
+                //     mysqli_stmt_bind_param($stmt, "i", $row['id']);
+                //     mysqli_stmt_execute($stmt);
+                // }
 
                 // Redirect to admin dashboard
                 header("Location: ../../admin/admin_dashboard.php");
