@@ -134,11 +134,12 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-  
 --
 -- Constraints for dumped tables
 --
-
+ALTER TABLE `user`
+ADD COLUMN remember_me_selector varchar(255) DEFAULT NULL,
+ADD COLUMN remember_me_token varchar(255) DEFAULT NULL;
 --
 -- Constraints for table `event_participants`
 --
