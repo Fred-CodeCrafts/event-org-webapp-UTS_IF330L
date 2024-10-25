@@ -35,7 +35,7 @@ else {
 
     if (empty($username) || empty($password)) {
 
-        $_SESSION['STATUS']['loginstatus'] = 'fields cannot be empty';
+        $_SESSION['STATUS']['loginstatus'] = 'Fields cannot be empty';
         header("Location: ../");
         exit();
     } 
@@ -83,18 +83,8 @@ else {
                 } 
                 else if ($pwdCheck == true) {
 
-                    // session_start();
-
-                    
-                    // if($row['verified_at'] != NULL){
-
-                    //     $_SESSION['auth'] = 'verified';
-                    // } else{
-
-                    //     $_SESSION['auth'] = 'loggedin';
-                    // }
                     $_SESSION['auth'] = 'loggedin';
-                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['id'] = $row['user_id'];
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['email'] = $row['email'];
                     $_SESSION['first_name'] = $row['first_name'];
@@ -105,45 +95,40 @@ else {
                     $_SESSION['profile_image'] = $row['profile_image'];
                     $_SESSION['created_at'] = $row['created_at'];
                     $_SESSION['last_login_at'] = $row['last_login_at'];
+                    $_SESSION['remember_me_selector'] = $row['remember_me_selector'];
+                    $_SESSION['remember_me_token'] = $row['remember_me_token'];
+                    $_SESSION['password_reset_token'] = $row['password_reset_token'];
+                    $_SESSION['password_reset_expires_at'] = $row['password_reset_expires_at'];
 
 
-                    if (isset($_POST['rememberme'])){
-
-                        $selector = bin2hex(random_bytes(8));
-                        $token = random_bytes(32);
-
-                        $sql = "DELETE FROM auth_tokens WHERE user_email=? AND auth_type='remember_me';";
-                        $stmt = mysqli_stmt_init($conn);
-                        if (!mysqli_stmt_prepare($stmt, $sql)) {
-
-                            $_SESSION['ERRORS']['scripterror'] = 'SQL ERROR';
-                            header("Location: ../");
-                            exit();
-                        }
-                        else {
-
-                            mysqli_stmt_bind_param($stmt, "s", $_SESSION['email']);
-                            mysqli_stmt_execute($stmt);
-                        }
-
-                        setcookie(
-                            'rememberme',
-                            $selector.':'.bin2hex($token),
-                            time() + 864000,
-                            '/',
-                            NULL,
-                            false, 
-                            true  
-                        );
-
-                        $sql = "INSERT INTO auth_tokens (user_email, auth_type, selector, token, expires_at) 
-                                VALUES (?, 'remember_me', ?, ?, ?);";
-                        $stmt = mysqli_stmt_init($conn);
-                        if (!mysqli_stmt_prepare($stmt, $sql)) {
-
-                            $_SESSION['ERRORS']['scripterror'] = 'SQL ERROR';
-                            header("Location: ../");
-                            exit();
+                     if (isset($_POST['rememberme'])) {
+                    $selector = bin2hex(random_bytes(8));
+                    $token = random_bytes(32);
+                    $sql = "UPDATE users SET remember_me_selector=?, remember_me_token=?, last_login_at=? WHERE email=?;";
+                    $stmt = mysqli_stmt_init($conn);
+                    
+                    if (!mysqli_stmt_prepare($stmt, $sql)) {
+                        $_SESSION['ERRORS']['scripterror'] = 'SQL ERROR';
+                        header("Location: ../");
+                        exit();
+                    } else {
+                        
+                        $hashedToken = password_hash($token, PASSWORD_DEFAULT);
+                        mysqli_stmt_bind_param($stmt, "ssss", $selector, $hashedToken, date('Y-m-d H:i:s'), $_SESSION['email']);
+                        mysqli_stmt_execute($stmt);
+                    }
+                    setcookie(
+                        'rememberme',
+                        $selector . ':' . bin2hex($token),
+                        time() + 864000,
+                        '/',
+                        NULL,
+                        false,
+                        true
+                    );
+                }
+                header("Location: ../../home/");
+                exit();
                         }
                         else {
                             
@@ -152,13 +137,13 @@ else {
                             mysqli_stmt_execute($stmt);
                         }
                     }
-                    header("Location: ../../../../../../user/home.php");
+                    header("Location: ../../user/home.php");
                     exit();
                 } 
             } 
             else {
 
-                $_SESSION['ERRORS']['nouser'] = 'username does not exist';
+                $_SESSION['ERRORS']['nouser'] = 'Username does not exist';
                 header("Location: ../");
                 exit();
             }

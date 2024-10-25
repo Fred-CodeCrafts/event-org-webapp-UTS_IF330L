@@ -21,7 +21,7 @@ function check_logged_out() {
     }
     else {
 
-        header("Location: ../../../../user/home.php");
+        header("Location: ../user/home.php");
         exit();
     }
 }
@@ -49,10 +49,9 @@ function force_login($email) {
         if (!$row = mysqli_fetch_assoc($result)) {
             
             return false;
-        }
-        else {
+        } else {
             $_SESSION['auth'] = 'loggedin';
-            $_SESSION['id'] = $row['id'];
+            $_SESSION['id'] = $row['user_id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['email'] = $row['email'];
             $_SESSION['first_name'] = $row['first_name'];

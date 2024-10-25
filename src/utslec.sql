@@ -17,8 +17,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
-CREATE DATABASE utslec;
-USE utslec;
 --
 -- Database: `utslec`
 --
@@ -80,7 +78,9 @@ CREATE TABLE `user` (
   `headline` varchar(100) DEFAULT NULL,
   `bio` varchar(255) DEFAULT NULL,
   `profile_image` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `password_reset_token` varchar(255) DEFAULT NULL,
+  `password_reset_expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -113,7 +113,6 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
-
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -135,11 +134,12 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
 --
 -- Constraints for dumped tables
 --
-
+ALTER TABLE `user`
+ADD COLUMN remember_me_selector varchar(255) DEFAULT NULL,
+ADD COLUMN remember_me_token varchar(255) DEFAULT NULL;
 --
 -- Constraints for table `event_participants`
 --
@@ -151,3 +151,17 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--@block
+CREATE TABLE admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+--@block
+INSERT INTO admin (username, email, password) VALUES ('admin', 'admin@example.com', 'admin123');
+--@block
+ALTER TABLE admin ADD last_login_at TIMESTAMP DEFAULT NULL;

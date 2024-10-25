@@ -20,34 +20,28 @@ $currentTime = date('H:i');
     <title>Admin Dashboard</title>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-875">
     <div class="p-10">
-            <a href="create_event.html" class="btn bg-green-500">
-                Create event
-            </a>
-
-            <a href="registered_user.php" class="btn bg-blue-500">
-                User management
-            </a>
         
-            <div class="mt-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
-            <form id="checkDel" action="delete_event.php" method="post">
-                <div class="flex items-center justify-between space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900 p-6">
-                    <div class="flex items-center">
-                        <label for="table-search" class="sr-only">Search</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                                </svg>
-                            </div>
-                            <input onkeyup="searchTable()" type="text" id="searchInput" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-50 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for events">
-                        </div>
-                    </div>
-                    <button type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5">
-                        Delete Selected
-                    </button>
+        <div class="mt-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
+            <div class="flex flex-row items-center space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900 p-6">
+                <div>
+                    <a href="create_event.html" class="bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
+                        Create event
+                    </a>
+
+                    <a href="registered_user.php" class="mt-3 md:mt-0 ml-0 md:ml-5 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
+                        User management
+                    </a>
                 </div>
+                <form id="checkDel" action="delete_event.php" method="post">
+                    <button type="submit" class="ml-6 md:ml-6 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 space-x-2">
+                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                        </svg>
+                        <span>Delete Selected</span>
+                    </button>
+            </div>
                 <?php if ($hasil->rowCount() > 0): ?>
                     <div class="relative overflow-x-auto p-6">
                         <table id="tablee" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -263,87 +257,15 @@ $currentTime = date('H:i');
             </form>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script>
-        function searchTable() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-
-            for (i = 1; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                    } else {
-                    tr[i].style.display = "none";
-                    }
-                }
-            }
-        }
-  
-        function setupTableSearch() {
-            const searchInput = document.getElementById('table-search-users');
-            const tableBody = document.querySelector('table tbody'); 
-            const tableRows = tableBody.getElementsByTagName('th');
-
-            searchInput.addEventListener('input', function(e) {
-                const searchTerm = e.target.value.toLowerCase().trim();
-
-                Array.from(tableRows).forEach(row => {
-                    let textContent = '';
-                    
-                    const cells = Array.from(row.getElementsByTagName('td')).slice(1); 
-                    
-                    cells.forEach(cell => {
-                        textContent += cell.textContent.toLowerCase() + ' ';
-                    });
-
-                    if (searchTerm === '' || textContent.includes(searchTerm)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-
-                updateNoResults(tableBody, Array.from(tableRows).every(row => row.style.display === 'none'));
+        if (document.getElementById("tablee") && typeof simpleDatatables.DataTable !== 'undefined') {
+            const dataTable = new simpleDatatables.DataTable("#tablee", {
+                searchable: true,
+                sortable: true
             });
         }
-
-        function updateNoResults(tableBody, noResults) {
-            const existingMessage = document.getElementById('no-results-message');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
-
-            if (noResults) {
-                const noResultsRow = document.createElement('tr');
-                noResultsRow.id = 'no-results-message';
-                noResultsRow.innerHTML = `
-                    <td colspan="100%" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                        No matching results found
-                    </td>
-                `;
-                tableBody.appendChild(noResultsRow);
-            }
-        }
-
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const debouncedSearch = debounce(setupTableSearch, 300);
             debouncedSearch();
