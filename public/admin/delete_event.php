@@ -24,4 +24,4 @@ if(isset($_POST['checkbox_delete'])){
     $stmt->execute();
 }
 
-// header("Location: admin_dashboard.php");
+header("Location: admin_dashboard.php");

@@ -34,7 +34,7 @@ $currentTime = date('H:i');
                         User management
                     </a>
 
-                    <a href="registered_user.php" class="mt-3 md:mt-0 ml-0 md:ml-5 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
+                    <a href="../aut/logout/" class="mt-3 md:mt-0 ml-0 md:ml-5 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center">
                         Log out
                     </a>
                 </div>
