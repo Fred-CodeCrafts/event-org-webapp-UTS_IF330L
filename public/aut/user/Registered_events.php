@@ -42,12 +42,16 @@ $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="flex mx-11 justify-center">
             <div class="grid grid-cols-1 gap-9 md:gap-24 lg:gap-32 md:grid-cols-2 lg:grid-cols-3">
                 <?php foreach ($events as $event) { ?>
-                    <div class="max-w-80 xs:max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 event-card"
-                        data-event-name="<?= htmlspecialchars($event['event_name']) ?>">
-                        <img class="rounded-t-lg" src="<?= '../../admin/gambar/' . $event['image'] ?>" />
+                    <div class="max-w-80 xs:max-w-sm bg-white border border-gray-200 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 dark:bg-gray-800 dark:border-gray-700 event-card" >
+                        <div class="">
+                            <img class="rounded-t-lg" src="<?= '../../admin/gambar/' . $event['image'] ?>" />
+                        </div>
                         <div class="p-5 mt-2">
-                            <div class="flex flex-row">
-                                <p class="text-base text-gray-800 leading-relaxed" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;">
+                            <h3 class=" text-xl font-semibold text-gray-900 dark:text-white">
+                                <?= htmlspecialchars($event['event_name']) ?>
+                            </h3>
+                            <div class="my-2 flex flex-row">
+                                <p class="text-base text-gray-800 dark:text-white leading-relaxed" style="word-wrap: break-word; word-break: break-word; max-width: 100%; white-space: normal;">
                                     <?= $event['description'] ?>
                                 </p>
                             </div>

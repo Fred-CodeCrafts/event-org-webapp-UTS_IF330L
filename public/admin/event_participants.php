@@ -82,7 +82,7 @@ if(isset($_GET['xlxs'])){
 </head>
 
 <body>
-    <h1 class="text-4xl text-center"><?= htmlspecialchars($eventName) ?> Participants</h1>
+    <h1 class="mt-9 text-4xl text-center"><?= htmlspecialchars($eventName) ?> Participants</h1>
     <div class="mt-10 p-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
         <div class="flex flex-row p-3">
             <a href="admin_dashboard.php" class="flex flex-row mr-4 p-2 items-center text-white bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-amber-300 dark:focus:ring-amber-800 font-medium rounded-lg text-sm px-5 py-2.5">

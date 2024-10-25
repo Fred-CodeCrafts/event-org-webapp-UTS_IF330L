@@ -82,7 +82,17 @@ $currentTime = date('H:i');
                                             </div>
                                         </th>
                                         <td class="px-6 py-4">
-                                            <?= htmlspecialchars($row['event_id']) ?>
+                                            <?php
+                                                $sql = "SELECT count(*) AS jmlh
+                                                        FROM event_participants 
+                                                        WHERE event_id = :id";
+                                                $id = $row['event_id'];
+                                                $stmt = connectDB()->prepare($sql);
+                                                $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+                                                $stmt->execute();
+                                                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                echo $result['jmlh'];
+                                            ?>
                                         </td>
                                         <td class="px-6 py-4">
                                             <?php if (($currentTimestamp >= $startTimestamp && $currentTimestamp <= $endTimestamp) && $row['status_toogle'] == 1) { ?>
