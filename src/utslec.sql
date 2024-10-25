@@ -78,7 +78,9 @@ CREATE TABLE `user` (
   `headline` varchar(100) DEFAULT NULL,
   `bio` varchar(255) DEFAULT NULL,
   `profile_image` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `password_reset_token` varchar(255) DEFAULT NULL,
+  `password_reset_expires_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -111,7 +113,6 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
-
 --
 -- AUTO_INCREMENT for dumped tables
 --
@@ -133,7 +134,7 @@ ALTER TABLE `event_participants`
 --
 ALTER TABLE `user`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
+  
 --
 -- Constraints for dumped tables
 --
