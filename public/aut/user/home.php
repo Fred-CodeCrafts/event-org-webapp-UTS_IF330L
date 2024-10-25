@@ -63,8 +63,8 @@ function registered($event_id) {
 
 <body>
     <?php require 'user_navbar.php'; ?>
-
-    <div class="mt-32">
+    
+    <div class="mt-28">
     <!-- Search Bar -->
     <div class="flex justify-center mb-6">
             <input type="text" id="searchInput" placeholder="Search events..." 
@@ -198,9 +198,9 @@ function registered($event_id) {
       hp 2024 Harsa. All rights reserved.</p>
     </footer>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+<!-- <script src="../../../node_modules/flowbite/dist/flowbite.min.js"></script> -->
         
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script>
 
         function filterEvents() {

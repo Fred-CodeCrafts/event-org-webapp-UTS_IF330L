@@ -85,5 +85,5 @@ if (isset($_POST['resetsubmit'])) {
     }
 } else {
     header("Location: ../");
-    exit();
+    exit();
 }

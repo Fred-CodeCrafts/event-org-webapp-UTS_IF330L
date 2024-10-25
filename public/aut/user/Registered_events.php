@@ -21,6 +21,8 @@ $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harsa - Registered Events</title>
     <link href="../../styles.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -28,8 +30,7 @@ $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <?php require 'user_navbar.php' ?>
-    <h1>My Registered Events</h1>
-    <div class="mt-32">
+    <div class="mt-28 min-h-screen">
     <!-- Search Bar -->
         <div class="flex justify-center mb-6">
                 <input type="text" id="searchInput" placeholder="Search events..." 
@@ -87,7 +88,7 @@ $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </p>
                                 </div>
                             </div>
-                            <div class="flex flex-row-reverse mt-2">
+                            <div class="flex flex-row-reverse mt-4">
                                 <a href="cancel_registration.php?event_id=<?= htmlspecialchars($event['event_id']) ?>"
                                     class="ml-3 flex flex-row p-2 mr-1 items-center text-white bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5">
                                     Cancel event
@@ -105,6 +106,9 @@ $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php } else { ?>
         <h1 class="text-center text-4xl font-extrabold mb-9 text-purple-600">There's no registered events</h1>
     <?php } ?>
+    <footer class="bg-gray-900 text-white text-center py-4 mt-8">
+      hp 2024 Harsa. All rights reserved.</p>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 </body>
 </html>

@@ -25,7 +25,7 @@ if (isset($_POST['resentsend'])) {
     // Generate selector, token, and URL for reset
     $selector = bin2hex(random_bytes(8));
     $token = random_bytes(32);
-    $url = "https://listwannabewebapp.my.id/harsacompany/reset-password/?selector=".$selector."&validator=".bin2hex($token);
+    $url = "http://localhost/utslec/public/aut/reset-password/?selector=" . $selector . "&validator=" . bin2hex($token);
     $expires = date("Y-m-d H:i:s", strtotime('+1 hour'));
 
     $email = $_POST['email'];

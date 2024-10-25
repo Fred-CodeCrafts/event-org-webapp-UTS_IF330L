@@ -20,7 +20,7 @@ $currentTime = date('H:i');
     <title>Admin Dashboard</title>
 </head>
 
-<body class="bg-gray-875">
+<body class="dark:bg-gray-875">
     <div class="p-10">
         
         <div class="mt-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
@@ -260,16 +260,16 @@ $currentTime = date('H:i');
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script>
-        if (document.getElementById("tablee") && typeof simpleDatatables.DataTable !== 'undefined') {
-            const dataTable = new simpleDatatables.DataTable("#tablee", {
-                searchable: true,
-                sortable: true
-            });
-        }
-        document.addEventListener('DOMContentLoaded', () => {
-            const debouncedSearch = debounce(setupTableSearch, 300);
-            debouncedSearch();
-        });
+        // if (document.getElementById("tablee") && typeof simpleDatatables.DataTable !== 'undefined') {
+        //     const dataTable = new simpleDatatables.DataTable("#tablee", {
+        //         searchable: true,
+        //         sortable: true
+        //     });
+        // }
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const debouncedSearch = debounce(setupTableSearch, 300);
+        //     debouncedSearch();
+        // });
 
         const selectAllCheckbox = document.getElementById('select-all');
         const eventCheckboxes = document.getElementsByClassName('event-checkbox');

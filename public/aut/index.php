@@ -1,12 +1,10 @@
 <?php
 
 if (isset($_SESSION['auth'])) {
-
-    header("Location: /utslec/public/aut/user/home.php");
+    echo "index utama";
+    //header("Location: user/home.php");
     exit();
-}
-else {
-
+} else {
     header("Location: login");
     exit();
 }

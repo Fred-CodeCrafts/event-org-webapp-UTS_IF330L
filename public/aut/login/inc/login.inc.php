@@ -17,11 +17,11 @@ if (!isset($_POST['loginsubmit'])) {
         $_POST[$key] = _cleaninjections(trim($value));
     }
 
-    if (!verify_csrf_token()) {
-        $_SESSION['STATUS']['loginstatus'] = 'Request could not be validated';
-        header("Location: ../");
-        exit();
-    }
+    // if (!verify_csrf_token()) {
+    //     $_SESSION['STATUS']['loginstatus'] = 'Request could not be validated';
+    //     header("Location: ../");
+    //     exit();
+    // }
 
     require '../../assets/setup/db.inc.php';
 
@@ -108,7 +108,7 @@ if (!isset($_POST['loginsubmit'])) {
                     }
 
                    
-                    header("Location: /utslec/public/aut/user/home.php");
+                    header("Location: ../../user/home.php");
                     exit();
                 }
             } else {
