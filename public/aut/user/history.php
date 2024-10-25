@@ -1,7 +1,7 @@
 <?php
 require 'config.php';
 
-session_start();
+// session_start();
 
 // Ensure the user is logged in
 if (!isset($_SESSION['username'])) {
@@ -10,10 +10,10 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Fetch past events that the user has registered for
-$sql = "SELECT e.event_name, e.start_date, e.end_date, e.image, r.registration_date 
+$sql = "SELECT e.event_name, e.start_date, e.end_date, e.image, ep.registration_date 
         FROM event e 
-        JOIN registration r ON e.event_id = r.event_id 
-        WHERE r.user_id = :user_id AND e.end_date < :current_date 
+        JOIN event_participants ep ON e.event_id = ep.event_id 
+        WHERE ep.user_id = :user_id AND e.end_date < :current_date 
         ORDER BY e.end_date DESC";
 
 $stmt = connectDB()->prepare($sql);
@@ -32,20 +32,10 @@ $past_events = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link href="../styles.css" rel="stylesheet">
     <title>Event History</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 <body>
-    <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-        <div class="max-w-screen-xl flex items-center justify-between mx-auto p-4">
-            <a href="index.php" class="flex items-center space-x-3">
-                <img src="../assets/images/logo3.png" class="h-11" alt="Logo" />
-                <span class="self-center text-2xl font-semibold dark:text-white">Harsa</span>
-            </a>
-            <div class="flex items-center">
-                <span class="text-gray-900 dark:text-white mr-4"><?= $_SESSION['username'] ?></span>
-                <a href="logout.php" class="text-gray-900 dark:text-white">Log out</a>
-            </div>
-        </div>
-    </nav>
+    <?php require 'user_navbar.php'; ?>
 
     <div class="mt-32 container mx-auto">
         <h1 class="text-center text-2xl font-bold mb-9">Event History</h1>
@@ -67,5 +57,11 @@ $past_events = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <?php endif; ?>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+
+    <footer class="bg-gray-900 text-white text-center py-4 mt-8">
+      hp 2024 Harsa. All rights reserved.</p>
+    </footer>
 </body>
 </html>

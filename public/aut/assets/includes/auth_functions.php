@@ -51,7 +51,7 @@ function force_login($email) {
             return false;
         } else {
             $_SESSION['auth'] = 'loggedin';
-            $_SESSION['id'] = $row['user_id'];
+            $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['username'] = $row['username'];
             $_SESSION['email'] = $row['email'];
             $_SESSION['first_name'] = $row['first_name'];

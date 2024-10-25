@@ -108,7 +108,7 @@ if (!isset($_POST['loginsubmit'])) {
                     }
 
                    
-                    header("Location: ../../user/home.php");
+                    header("Location: /utslec/public/aut/user/home.php");
                     exit();
                 }
             } else {
