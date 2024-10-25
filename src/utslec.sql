@@ -165,4 +165,4 @@ CREATE TABLE admin (
 --@block
 INSERT INTO admin (username, email, password) VALUES ('admin', 'admin@example.com', 'admin123');
 --@block
-ALTER TABLE admin ADD last_login_at TIMESTAMP DEFAULT NULL;
+ALTER TABLE admin ADD last_login_at DATETIME NULL;

@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['loginsubmit'])) {
 
     require '../assets/setup/db.inc.php';
 
+    // Retrieve form data
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -53,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['loginsubmit'])) {
 
         // Check if user exists
         if ($row = mysqli_fetch_assoc($result)) {
-            // Secure password verification using password_verify
-            if (!password_verify($password, $row['password'])) {
+            // Direct password comparison
+            if ($password !== $row['password']) {
                 $_SESSION['ERRORS']['wrongpassword'] = 'Wrong password';
                 header("Location: admin.php");
                 exit();
