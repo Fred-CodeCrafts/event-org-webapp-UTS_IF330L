@@ -15,102 +15,91 @@ require '../../assets/vendor/PHPMailer/src/Exception.php';
 require '../../assets/vendor/PHPMailer/src/PHPMailer.php';
 require '../../assets/vendor/PHPMailer/src/SMTP.php';
 
-if (isset($_POST['resentsend'])) {
+try {
+    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_DATABASE, DB_USER, DB_PASS);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
 
-    // Clean input
-    foreach($_POST as $key => $value) {
-        $_POST[$key] = _cleaninjections(trim($value));
+function generateRandomToken($length = 6) {
+    $token = '';
+    for ($i = 0; $i < $length; $i++) {
+        $token .= mt_rand(0, 9);
     }
+    return $token; 
+}
 
-    // Generate selector, token, and URL for reset
-    $selector = bin2hex(random_bytes(8));
-    $token = random_bytes(32);
-    $url = "http://localhost/utslec/public/aut/reset-password/?selector=" . $selector . "&validator=" . bin2hex($token);
-    $expires = date("Y-m-d H:i:s", strtotime('+1 hour'));
+$error = "";
+$success = "";
 
-    $email = $_POST['email'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = isset($_POST["email"]) ? trim($_POST["email"]) : '';
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $_SESSION['ERRORS']['emailerror'] = 'Invalid email address';
-        header("Location: ../");
-        exit();
-    }
-
-    $sql = "SELECT user_id FROM user WHERE email=?;";
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        $_SESSION['ERRORS']['sqlerror'] = 'SQL ERROR';
-        header("Location: ../");
-        exit();
+    if (empty($email)) {
+        $error = "Please fill in the email field.";
     } else {
-        mysqli_stmt_bind_param($stmt, "s", $email);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_store_result($stmt);
+        $stmt = $pdo->prepare("SELECT * FROM user WHERE email=?");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
 
-        if (mysqli_stmt_num_rows($stmt) == 0) {
-            $_SESSION['ERRORS']['emailerror'] = 'Given email does not exist in our records';
-            header("Location: ../");
-            exit();
+        if (!$user) {
+            $error = "No account found with that email. Please check your details and try again.";
+        } else {
+            $newPassword = generateRandomToken(); 
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE email = ?");
+            $stmt->execute([$hashedPassword, $email]);
+            
+            $mail = new PHPMailer(true);
+            try {
+                $mail->isSMTP();
+                $mail->Host = "smtp.gmail.com";
+                $mail->SMTPAuth = true;
+                $mail->Username = "Fg.cygnus468@gmail.com"; 
+                $mail->Password = "cgln mzwz wzfv tqzn"; 
+                $mail->SMTPSecure = 'tls';
+                $mail->Port = 587;
+
+                $mail->setFrom("fg.cygnus468@gmail.com", "Event Website");
+                $mail->addAddress($email);
+
+                $mail->isHTML(true);
+                $mail->Subject = "Your Temporary Password";
+                $mail->Body = "Your password has been reset. Here is your new password: <strong>$newPassword</strong><br>
+                               Please log in using this password and change it manually through your profile page after logging in.";
+
+                $mail->send();
+                $success = "A new password has been sent to your email. Please log in and change it manually through your profile page.";
+            } catch (Exception $e) {
+                $error = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
         }
     }
-    $hashedToken = password_hash($token, PASSWORD_DEFAULT);
-    $sql = "UPDATE user SET password_reset_token=?, password_reset_expires_at=? WHERE email=?;";
-    $stmt = mysqli_stmt_init($conn);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        $_SESSION['ERRORS']['sqlerror'] = 'SQL ERROR';
-        header("Location: ../");
-        exit();
-    } else {
-        mysqli_stmt_bind_param($stmt, "sss", $hashedToken, $expires, $email);
-        mysqli_stmt_execute($stmt);
-    }
-
-    mysqli_stmt_close($stmt);
-    mysqli_close($conn);
-
-    $to = $email;
-    $subject = 'Reset Your Password';
-
-    $mail_variables = array(
-        'APP_NAME' => APP_NAME,
-        'email' => $email,
-        'url' => $url
-    );
-
-    $message = file_get_contents("./template_passwordresetemail.php");
-    foreach ($mail_variables as $key => $value) {
-        $message = str_replace('{{ '.$key.' }}', $value, $message);
-    }
-
-    $mail = new PHPMailer(true);
-
-    try {
-        $mail->isSMTP();
-        $mail->Host = MAIL_HOST;
-        $mail->SMTPAuth = true;
-        $mail->Username = MAIL_USERNAME;
-        $mail->Password = MAIL_PASSWORD;
-        $mail->SMTPSecure = MAIL_ENCRYPTION;
-        $mail->Port = MAIL_PORT;
-
-        $mail->setFrom(MAIL_USERNAME, APP_NAME);
-        $mail->addAddress($to, APP_NAME);
-
-        $mail->isHTML(true);
-        $mail->Subject = $subject;
-        $mail->Body = $message;
-
-        $mail->send();
-    } catch (Exception $e) {
-        $_SESSION['STATUS']['mailstatus'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
-        header("Location: ../");
-        exit();
-    }
-
-    $_SESSION['STATUS']['resentsend'] = 'Verification email sent';
-    header("Location: ../");
-    exit();
-} else {
-    header("Location: ../");
-    exit();
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+
+<div class="container mx-auto max-w-md p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-center text-2xl font-semibold mb-6 text-gray-800">Password Reset Status</h2>
+    <div class="text-center mt-4">
+        <?php if ($error): ?>
+            <div class="text-red-600"><?= htmlspecialchars($error) ?></div>
+        <?php elseif ($success): ?>
+            <div class="text-green-600"><?= htmlspecialchars($success) ?></div>
+        <?php endif; ?>
+        <a href="http://localhost/kk/public/aut/login/index.php" class="text-sm text-blue-600 hover:underline">Back to Login</a>
+        </div>
+</div>
+
+</body>
+</html>
