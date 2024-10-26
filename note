@@ -5,3 +5,8 @@ VIDEO
 https://github.com/Fred-CodeCrafts/event-org-webapp-UTS_IF330L/tree/main
 
 LINK GITHUB
+
+admin:
+username : admin
+email : admin@example.com
+password : admin123
