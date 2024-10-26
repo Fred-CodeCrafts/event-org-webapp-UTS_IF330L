@@ -1,4 +1,9 @@
 <?php
+session_start();
+if(!isset($_SESSION["admin"]) || $_SESSION["admin"] != "true") {
+	header("Location: ../aut/login/admin.php");
+}
+
 require_once('../DB.php');
 
 $sql = "SELECT user_id,username,email,COALESCE(CONCAT(first_name, ' ', last_name), first_name) as name FROM user";
@@ -47,20 +52,9 @@ function getUserEvents($userid){
 
     </a> 
     <div class="mt-3 relative overflow-x-auto shadow-md rounded-lg dark:bg-gray-900">
-        <div class="flex items-center space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900 p-6">
-            <label for="table-search" class="sr-only">Search</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-                    </svg>
-                </div>
-                <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-50 md:w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for user">
-            </div>
-        </div>
         <?php if ($stmt->rowCount() > 0): ?>
             <div class="relative overflow-x-auto p-6">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table id="tablee" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -153,7 +147,19 @@ function getUserEvents($userid){
         <?php endif; ?>
     </div>
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-<!-- <script src="../../node_modules/flowbite/dist/flowbite.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
+<script>
+    if (document.getElementById("tablee") && typeof simpleDatatables.DataTable !== 'undefined') {
+            const dataTable = new simpleDatatables.DataTable("#tablee", {
+                searchable: true,
+                sortable: true
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const debouncedSearch = debounce(setupTableSearch, 300);
+            debouncedSearch();
+        });
+</script>
 </body>
 
 </html>

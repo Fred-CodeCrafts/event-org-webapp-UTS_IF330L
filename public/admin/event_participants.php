@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if(!isset($_SESSION["admin"]) || $_SESSION["admin"] != "true") {
+	header("Location: ../aut/login/admin.php");
+}
+
 require_once('../DB.php');
 
 $sql = "SELECT e.event_name as eventName,u.username as nama, u.username as user,u.email as email
@@ -108,7 +114,7 @@ if(isset($_GET['xlxs'])){
             </div>
         </div>
         <div class="relative overflow-x-auto p-6">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border dark:border-transparent">
+            <table id="tablee" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border dark:border-transparent">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -146,6 +152,18 @@ if(isset($_GET['xlxs'])){
         <p>No user registered</p>
     <?php } ?>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
 </body>
-
+<script>
+    if (document.getElementById("tablee") && typeof simpleDatatables.DataTable !== 'undefined') {
+            const dataTable = new simpleDatatables.DataTable("#tablee", {
+                searchable: true,
+                sortable: true
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const debouncedSearch = debounce(setupTableSearch, 300);
+            debouncedSearch();
+        });
+</script>
 </html>

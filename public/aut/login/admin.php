@@ -77,6 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['loginsubmit'])) {
 
                 // Redirect to admin dashboard
                 header("Location: ../../admin/admin_dashboard.php");
+                $_SESSION["admin"] = "true";
                 exit();
             }
         } else {
@@ -140,13 +141,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['loginsubmit'])) {
 
             <div class="mt-4 text-center">
                 <p>
-                    <a href="../register/" class="text-indigo-500 hover:underline">Register</a>
-                </p>
-                <p>
                     <a href="../reset-password/" class="text-indigo-500 hover:underline">Forgot password?</a>
                 </p>
                 <div class="mt-4">
-                    <a href="index.php" class="text-indigo-500 hover:underline">Back to Index</a>
+                    <a href="index.php" class="text-indigo-500 hover:underline">Back to User Login</a>
                 </div>
             </div>
         </div>

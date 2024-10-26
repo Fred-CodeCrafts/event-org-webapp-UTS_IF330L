@@ -1,4 +1,9 @@
 <?php
+session_start();
+if(!isset($_SESSION["admin"]) || $_SESSION["admin"] != "true") {
+	header("Location: ../aut/login/admin.php");
+}
+
 require_once('../DB.php');
 
 $sql = "SELECT * FROM event";
@@ -38,23 +43,12 @@ $currentTime = date('H:i');
                         Log out
                     </a>
                 </div>
-                <!-- <form id="checkDel" action="delete_event.php" method="post">
-                    <button type="submit" class="ml-4 md:ml-6 text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 space-x-2">
-                        <svg class="w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                        </svg>
-                        <span>Delete Selected</span>
-                    </button> -->
-
             </div>
                 <?php if ($hasil->rowCount() > 0): ?>
                     <div class="relative overflow-x-auto p-6">
                         <table id="tablee" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <!-- <th scope="col" class="px-6 py-3">
-                                        <input type="checkbox" id="select-all" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
-                                    </th> -->
                                     <th scope="col" class="px-6 py-3">Name</th>
                                     <th scope="col" class="px-6 py-3">Participants</th>
                                     <th scope="col" class="px-6 py-3">Status</th>
@@ -73,14 +67,6 @@ $currentTime = date('H:i');
                                     $endTimestamp = strtotime("$end_date $end_time");
                                 ?>
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                                        <!-- <td class="w-4 p-4">
-                                            <div class="flex justify-center items-center">
-                                                <input name="checkbox_delete[]" 
-                                                    value="<?= htmlspecialchars($row['event_id']) ?>" 
-                                                    type="checkbox" 
-                                                    class="event-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                            </div>
-                                        </td> -->
                                         <th scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             <div class="ps-2">
                                                 <div class="text-base font-semibold"><?= htmlspecialchars($row['event_name']) ?></div>
@@ -272,47 +258,10 @@ $currentTime = date('H:i');
             </form>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script>
-        // if (document.getElementById("tablee") && typeof simpleDatatables.DataTable !== 'undefined') {
-        //     const dataTable = new simpleDatatables.DataTable("#tablee", {
-        //         searchable: true,
-        //         sortable: true
-        //     });
-        // }
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const debouncedSearch = debounce(setupTableSearch, 300);
-        //     debouncedSearch();
-        // });
-
-        const selectAllCheckbox = document.getElementById('select-all');
-        const eventCheckboxes = document.getElementsByClassName('event-checkbox');
-
-        selectAllCheckbox.addEventListener('change', function() {
-            const isChecked = this.checked;
-            
-            for (let checkbox of eventCheckboxes) {
-                checkbox.checked = isChecked;
-            }
-        });
-
-        Array.from(eventCheckboxes).forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const allChecked = Array.from(eventCheckboxes).every(cb => cb.checked);
-                
-                selectAllCheckbox.checked = allChecked;
-                
-                if (!allChecked && Array.from(eventCheckboxes).some(cb => cb.checked)) {
-                    selectAllCheckbox.indeterminate = true;
-                } else {
-                    selectAllCheckbox.indeterminate = false;
-                }
-            });
-        });
 
         document.addEventListener('DOMContentLoaded', function() {
-            
             function hideModal(modal) {
                 if (!modal) return;
                 modal.classList.add('hidden');

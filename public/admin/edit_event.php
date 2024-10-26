@@ -1,4 +1,9 @@
 <?php
+session_start();
+if(!isset($_SESSION["admin"]) || $_SESSION["admin"] != "true") {
+	header("Location: ../aut/login/admin.php");
+}
+
 require_once('../DB.php');
 
 if (isset($_GET["event_id"])) {
