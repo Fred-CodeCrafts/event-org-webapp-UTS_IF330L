@@ -10,3 +10,5 @@ admin:
 username : admin
 email : admin@example.com
 password : admin123
+
+*apabila desain tidak berjalan maka harus melakukan instalansi tailwind CSS (node_modules)
