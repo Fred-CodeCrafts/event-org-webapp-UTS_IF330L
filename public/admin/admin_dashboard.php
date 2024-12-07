@@ -8,6 +8,7 @@ require_once('../DB.php');
 
 $sql = "SELECT * FROM event";
 $hasil = connectDB()->query($sql);
+//asdasd
 
 date_default_timezone_set('Asia/Jakarta');
 $currentDate = date('Y-m-d');
